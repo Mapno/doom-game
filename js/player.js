@@ -9,6 +9,8 @@ function Player(game) {
     this.vy = 0;
     this.w = 40;
     this.h = 54;
+    this.direction = true; //true -> right; false -> left
+    this.shooted = false;
 
     this.bullets = [];
 
@@ -17,18 +19,27 @@ function Player(game) {
     this.movements = {
         right: false,
         left: false,
-        up: false
+        up: false,
+        shoot: false
     };
 }
 
 Player.prototype.draw = function() {
-    if(this.vx < 0 && this.y === this.y0){
-        this.game.ctx.drawImage(this.imgMoveLeft[this.game.frames % 4], this.x, this.y);
-    } else if(this.vx > 0 && this.y === this.y0) {
-        this.game.ctx.drawImage(this.imgMoveRight[this.game.frames % 6], this.x, this.y);
-    } else {
-        this.game.ctx.drawImage(this.imgStill, this.x, this.y);
-
+    switch(true) {
+        case this.shooted:
+            this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y);
+            setTimeout(function() {
+                this.shooted = false;
+            }.bind(this), 50);
+            break;
+        case this.vx < 0:
+            this.game.ctx.drawImage(this.imgMoveLeft[this.game.frames % 4], this.x, this.y);
+            break;
+        case this.vx > 0:
+            this.game.ctx.drawImage(this.imgMoveRight[this.game.frames % 6], this.x, this.y);
+            break;
+        case this.vx === 0:
+            this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
     }
 
     this.bullets.forEach(function(e){
@@ -37,8 +48,10 @@ Player.prototype.draw = function() {
 }
 
 Player.prototype.getImages = function() {
-    this.imgStill = new Image();
-    this.imgStill.src = "./assets/sprites/doom-guy/still.png";
+    this.imgStillRight = new Image();
+    this.imgStillRight.src = "./assets/sprites/doom-guy/stillRight.png";
+    this.imgStillLeft = new Image();
+    this.imgStillLeft.src = "./assets/sprites/doom-guy/stillLeft.png";
 
     var img;
     this.imgMoveRight = [];
@@ -53,6 +66,11 @@ Player.prototype.getImages = function() {
         img.src = './assets/sprites/doom-guy/left' + i + '.png';
         this.imgMoveLeft.push(img);
     }
+
+    this.imgShootRight = new Image();
+    this.imgShootRight.src = "./assets/sprites/doom-guy/shootRight.png";
+    this.imgShootLeft = new Image();
+    this.imgShootLeft.src = "./assets/sprites/doom-guy/shootLeft.png";
 }
 
 Player.prototype.moveX = function() {
@@ -108,9 +126,11 @@ Player.prototype.eventListener = function() {
         switch(e.keyCode) {
             case KEY_RIGHT:
                 this.movements.right = true;
+                this.direction = true;
                 break;
             case KEY_LEFT:
                 this.movements.left = true;
+                this.direction = false;
                 break;
             case KEY_UP:
                 this.movements.up = true;
@@ -137,7 +157,8 @@ Player.prototype.eventListener = function() {
 
 
 Player.prototype.shoot = function() {
-    var bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2);
-  
+    var bullet;
+    this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2) : bullet = new Bullet(this, this.game, this.x - this.w, this.y + this.h / 2);
+    this.shooted = true;
     this.bullets.push(bullet);
   };
