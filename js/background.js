@@ -1,9 +1,10 @@
-function Background(game) {
+function Background(game, player) {
     this.bgFrames = [];
     this.x = 0;
     this.y = 0;
     this.game = game;
-    this.frame = 0;
+    this.dx = 10;
+    this.player = player;
 }
 
 Background.prototype.getImages = function () {
@@ -16,9 +17,15 @@ Background.prototype.getImages = function () {
 }
 
 Background.prototype.draw = function () {
-    this.game.ctx.drawImage(this.bgFrames[this.frame % 8], 0, 0);
-    // this.game.ctx.drawImage(this.bgFrames[this.frame % 8], this.x + this.game.canvas.width, this.y, this.game.canvas.width, this.game.canvas.height);
+    this.game.ctx.drawImage(this.bgFrames[this.game.frames % 8], this.x, this.y);
+    this.game.ctx.drawImage(this.bgFrames[this.game.frames % 8], this.x + this.game.c.width, this.y);
 
-    this.frame++;
 
+}
+
+Background.prototype.move = function() {
+    this.player.x >= this.player.x0 ? this.x -= this.player.vx : 0;
+
+    this.x < -this.game.c.width || this.x > 0 ? this.x = 0 : 0;
+    
 }

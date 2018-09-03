@@ -1,8 +1,8 @@
 function Game() {
     this.c = document.getElementById("canvas");
     this.ctx = this.c.getContext("2d");
-    this.background = new Background(this);
     this.player = new Player(this);
+    this.background = new Background(this, this.player);
     this.frames = 0;
 }
 
@@ -20,6 +20,7 @@ Game.prototype.start = function() {
 Game.prototype.move = function() {
     this.player.move();
     this.player.jump();
+    this.background.move();
 }
 
 Game.prototype.clear = function() {

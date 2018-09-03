@@ -1,8 +1,9 @@
 function Player(game) {
 
     this.x = 100;
-    this.y = 200;
-    this.y0 = 200;
+    this.y = 210;
+    this.y0 = this.y;
+    this.x0 = this.x;
     this.game = game;
     this.vx = 0;
     this.vy = 0;
@@ -18,12 +19,13 @@ function Player(game) {
 }
 
 Player.prototype.draw = function() {
-    if(this.vx === 0){
-        this.game.ctx.drawImage(this.imgStill, this.x, this.y);
-    } else if(this.vx > 0) {
+    if(this.vx < 0 && this.y === this.y0){
+        this.game.ctx.drawImage(this.imgMoveLeft[this.game.frames % 4], this.x, this.y);
+    } else if(this.vx > 0 && this.y === this.y0) {
         this.game.ctx.drawImage(this.imgMoveRight[this.game.frames % 6], this.x, this.y);
     } else {
-        this.game.ctx.drawImage(this.imgMoveLeft[this.game.frames % 4], this.x, this.y);
+        this.game.ctx.drawImage(this.imgStill, this.x, this.y);
+
     }
     this.frame++;
 }
@@ -47,24 +49,32 @@ Player.prototype.getImages = function() {
     }
 }
 
-Player.prototype.move = function() {
+Player.prototype.moveX = function() {
     if(this.movements.right) {
-        this.vx = 3;
+        this.vx = 8;
         this.x += this.vx;
     } else if(this.movements.left) {
-        this.vx = -3;
+        this.vx = -8;
         this.x += this.vx;
     } else {
         this.vx = 0;
     }
 
+    // this.x <= 0 ? this.x == 0 : 0;
+};
+
+Player.prototype.moveY = function() {
     if (this.y >= this.y0) {
         this.y = this.y0;
       } else {
         this.y += this.vy;
       }
+}
 
-};
+Player.prototype.move = function() {
+    this.moveX();
+    this.moveY();
+}
 
 var gravity = 2;
 
