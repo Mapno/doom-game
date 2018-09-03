@@ -67,3 +67,7 @@ Imp.prototype.imgfps = function() {
     this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 4 ? this.frameIndex = 0 : 0;
 }
+
+Imp.prototype.attack = function() {
+    // this.x <= this.player.x + 
+}
