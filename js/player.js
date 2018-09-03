@@ -2,9 +2,10 @@ function Player(game) {
 
     this.x = 100;
     this.y = 200;
+    this.y0 = 200;
     this.game = game;
     this.vx = 0;
-    // this.vy = 0;
+    this.vy = 0;
     this.frame = 0;
 
     this.eventListener();
@@ -12,8 +13,7 @@ function Player(game) {
     this.movements = {
         right: false,
         left: false,
-        up: false,
-        down: false
+        up: false
     };
 }
 
@@ -47,9 +47,6 @@ Player.prototype.getImages = function() {
     }
 }
 
-const KEY_RIGHT = 39;
-const KEY_LEFT = 37;
-
 Player.prototype.move = function() {
     if(this.movements.right) {
         this.vx = 3;
@@ -60,7 +57,30 @@ Player.prototype.move = function() {
     } else {
         this.vx = 0;
     }
+
+    if (this.y >= this.y0) {
+        this.y = this.y0;
+      } else {
+        this.y += this.vy;
+      }
+
 };
+
+var gravity = 2   ;
+
+Player.prototype.jump = function() {
+    
+    if (this.movements.up && this.y == this.y0) {
+        this.vy = -14;
+        this.y += this.vy;
+    } else {
+        this.vy += gravity;
+    }
+}
+
+const KEY_RIGHT = 39;
+const KEY_LEFT = 37;
+const KEY_UP = 38;
 
 Player.prototype.eventListener = function() {
     document.onkeydown = function(e) {
@@ -70,6 +90,9 @@ Player.prototype.eventListener = function() {
                 break;
             case KEY_LEFT:
                 this.movements.left = true;
+                break;
+            case KEY_UP:
+                this.movements.up = true;
                 break;
         }
     }.bind(this);

@@ -14,11 +14,13 @@ Game.prototype.start = function() {
         this.move();
         this.draw();
         this.frames++;
+        console.log(this.player.vy);
     }.bind(this), 100);
 }
 
 Game.prototype.move = function() {
     this.player.move();
+    this.player.jump();
 }
 
 Game.prototype.clear = function() {
