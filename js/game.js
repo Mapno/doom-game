@@ -11,9 +11,8 @@ Game.prototype.start = function() {
     this.player.getImages();
     this.interval = setInterval(function(){
         this.clear();
-        this.player.move();
-        this.background.draw();
-        this.player.draw();
+        this.move();
+        this.draw();
         this.frames++;
     }.bind(this), 100);
 }
@@ -24,4 +23,9 @@ Game.prototype.move = function() {
 
 Game.prototype.clear = function() {
     this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-  };
+};
+
+Game.prototype.draw = function() {
+    this.background.draw();
+    this.player.draw();
+}
