@@ -3,6 +3,7 @@ function Game() {
     this.ctx = this.c.getContext("2d");
     this.background = new Background(this);
     this.player = new Player(this);
+    this.frames = 0;
 }
 
 Game.prototype.start = function() {
@@ -13,6 +14,7 @@ Game.prototype.start = function() {
         this.player.move();
         this.background.draw();
         this.player.draw();
+        this.frames++;
     }.bind(this), 100);
 }
 
