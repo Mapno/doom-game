@@ -158,7 +158,7 @@ Player.prototype.eventListener = function() {
 
 Player.prototype.shoot = function() {
     var bullet;
-    this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2) : bullet = new Bullet(this, this.game, this.x - this.w, this.y + this.h / 2);
+    this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
     this.shooted = true;
     this.bullets.push(bullet);
   };

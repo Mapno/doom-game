@@ -3,12 +3,12 @@ function Game() {
     this.ctx = this.c.getContext("2d");
     this.player = new Player(this);
     this.background = new Background(this, this.player);
+    this.imp = new Imp(this);
     this.frames = 0;
 }
 
 Game.prototype.start = function() {
-    this.background.getImages();
-    this.player.getImages();
+    this.fetch();
     this.interval = setInterval(function(){
         this.clear();
         this.move();
@@ -17,10 +17,17 @@ Game.prototype.start = function() {
     }.bind(this), 100);
 }
 
+Game.prototype.fetch = function() {
+    this.background.getImages();
+    this.player.getImages();
+    this.imp.getImages();
+}
+
 Game.prototype.move = function() {
     this.player.move();
     this.player.jump();
     this.background.move();
+    this.imp.move();
 }
 
 Game.prototype.clear = function() {
@@ -30,4 +37,5 @@ Game.prototype.clear = function() {
 Game.prototype.draw = function() {
     this.background.draw();
     this.player.draw();
+    this.imp.draw();
 }
