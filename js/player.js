@@ -79,13 +79,11 @@ Player.prototype.moveX = function() {
         this.vx = 2;
         this.x += this.vx;
     } else if(this.movements.left) {
-        this.vx = -2;
+        this.x <= 50 ? this.vx = 0 : this.vx = -2;
         this.x += this.vx;
     } else {
         this.vx = 0;
     }
-
-    // this.x <= 0 ? this.x == 0 : 0;
 };
 
 Player.prototype.moveY = function() {

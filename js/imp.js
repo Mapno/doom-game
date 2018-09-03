@@ -1,8 +1,9 @@
-function Imp(game) {
+function Imp(game, player) {
     this.x = 650;
     this.y = 210;
     this.direction = false; //true -> right; false -> left
-    this.vx = -2;
+    this.player = player;
+    this.vx = -1;
     this.w = 38;
     this.h = 51;
     this.impact = false;
@@ -41,7 +42,7 @@ Imp.prototype.draw = function() {
                 this.impact = false;
             }.bind(this), 100);
             break;
-        case this.vx < 0:
+        case true:
             this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y, this.w, this.h);
             break;
 
@@ -49,8 +50,9 @@ Imp.prototype.draw = function() {
 }
 
 Imp.prototype.move = function() {
-    this.impact ? this.vx = 0 : this.vx = -1;
+    this.impact ? this.vx = 0 : this.player.vx ? this.vx = -1 - this.player.vx : this.vx = -1;
     this.x += this.vx;
+    console.log(this.vx);
 }
 
 Imp.prototype.getsHit = function() {
@@ -64,5 +66,4 @@ Imp.prototype.getsHit = function() {
 Imp.prototype.imgfps = function() {
     this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 4 ? this.frameIndex = 0 : 0;
-    
 }

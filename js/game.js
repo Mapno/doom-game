@@ -3,7 +3,7 @@ function Game() {
     this.ctx = this.c.getContext("2d");
     this.player = new Player(this);
     this.background = new Background(this, this.player);
-    this.imp = new Imp(this);
+    this.imp = new Imp(this, this.player);
     this.frames = 0;
     this.frameIndex = 0;
 }
