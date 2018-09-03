@@ -17,6 +17,8 @@ Background.prototype.getImages = function () {
 
 Background.prototype.draw = function () {
     this.game.ctx.drawImage(this.bgFrames[this.frame % 8], 0, 0);
+    // this.game.ctx.drawImage(this.bgFrames[this.frame % 8], this.x + this.game.canvas.width, this.y, this.game.canvas.width, this.game.canvas.height);
+
     this.frame++;
 
 }

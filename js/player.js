@@ -66,7 +66,7 @@ Player.prototype.move = function() {
 
 };
 
-var gravity = 2   ;
+var gravity = 2;
 
 Player.prototype.jump = function() {
     
@@ -97,9 +97,17 @@ Player.prototype.eventListener = function() {
         }
     }.bind(this);
 
-    document.onkeyup = function() {
-        for(let key in this.movements) {
-            this.movements[key] = false;
+    document.onkeyup = function(e) {
+        switch(e.keyCode) {
+            case KEY_RIGHT:
+                this.movements.right = false;
+                break;
+            case KEY_LEFT:
+                this.movements.left = false;
+                break;
+            case KEY_UP:
+                this.movements.up = false;
+                break;
         }
     }.bind(this);
 }
