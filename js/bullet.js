@@ -3,16 +3,18 @@ function Bullet(player, game, x, y) {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.player.direction ? this.vx = 50 : this.vx = -50;
+    this.player.direction ? this.vx = 5 : this.vx = -5;
     this.r = 5;
     this.gravity = 0.25;
+    this.w = 5;
+    this.h = 1;
     // this.player.vx > 0 ? this.vx += this.player.vx : 0;
 }
 
 Bullet.prototype.draw = function() {
     this.game.ctx.beginPath();
     this.game.ctx.fillStyle = "grey";
-    this.game.ctx.rect(this.x, this.y, 5, 1);
+    this.game.ctx.rect(this.x, this.y, this.w, this.h);
     this.game.ctx.fill();
     this.game.ctx.closePath();
   }

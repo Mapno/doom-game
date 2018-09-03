@@ -5,6 +5,7 @@ function Game() {
     this.background = new Background(this, this.player);
     this.imp = new Imp(this);
     this.frames = 0;
+    this.frameIndex = 0;
 }
 
 Game.prototype.start = function() {
@@ -13,8 +14,10 @@ Game.prototype.start = function() {
         this.clear();
         this.move();
         this.draw();
+        this.imp.getsHit();
         this.frames++;
-    }.bind(this), 100);
+        this.frames === 1000 ? this.frames = 0 : 0;
+    }.bind(this), 1000 / 60);
 }
 
 Game.prototype.fetch = function() {
@@ -39,3 +42,4 @@ Game.prototype.draw = function() {
     this.player.draw();
     this.imp.draw();
 }
+

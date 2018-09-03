@@ -11,6 +11,7 @@ function Player(game) {
     this.h = 54;
     this.direction = true; //true -> right; false -> left
     this.shooted = false;
+    this.frameIndex = 0;
 
     this.bullets = [];
 
@@ -33,10 +34,10 @@ Player.prototype.draw = function() {
             }.bind(this), 50);
             break;
         case this.vx < 0:
-            this.game.ctx.drawImage(this.imgMoveLeft[this.game.frames % 4], this.x, this.y);
+            this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
             break;
         case this.vx > 0:
-            this.game.ctx.drawImage(this.imgMoveRight[this.game.frames % 6], this.x, this.y);
+            this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y);
             break;
         case this.vx === 0:
             this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
@@ -75,10 +76,10 @@ Player.prototype.getImages = function() {
 
 Player.prototype.moveX = function() {
     if(this.movements.right) {
-        this.vx = 8;
+        this.vx = 2;
         this.x += this.vx;
     } else if(this.movements.left) {
-        this.vx = -8;
+        this.vx = -2;
         this.x += this.vx;
     } else {
         this.vx = 0;
@@ -96,6 +97,7 @@ Player.prototype.moveY = function() {
 }
 
 Player.prototype.move = function() {
+    this.imgfps();
     this.moveX();
     this.moveY();
     this.bullets.forEach(function(e, i, bullets){
@@ -104,12 +106,12 @@ Player.prototype.move = function() {
     });
 }
 
-var gravity = 2;
+var gravity = 0.4;
 
 Player.prototype.jump = function() {
     
     if (this.movements.up && this.y == this.y0) {
-        this.vy = -14;
+        this.vy = -8;
         this.y += this.vy;
     } else {
         this.vy += gravity;
@@ -161,4 +163,10 @@ Player.prototype.shoot = function() {
     this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
     this.shooted = true;
     this.bullets.push(bullet);
-  };
+};
+
+Player.prototype.imgfps = function() {
+    this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
+    this.frameIndex === 3 ? this.frameIndex = 0 : 0;
+    
+}
