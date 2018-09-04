@@ -1,4 +1,4 @@
-function Player(game) {
+function Player(game, life) {
     //basic element positions and measurements
     this.x = 20;
     this.y = 210;
@@ -6,6 +6,8 @@ function Player(game) {
     this.x0 = this.x;
     this.w = 40;
     this.h = 54;
+
+    this.life = life;
 
     //fetch the game so it can paint on the canvas obj
     this.game = game;
@@ -118,7 +120,7 @@ Player.prototype.move = function() {
     this.moveY();
     this.bullets.forEach(function(e, i, bullets){
         e.move();
-        e.x >= e.game.c.width || e.x <= 0 ? bullets.shift() : 0;
+        e.x >= e.game.c.width || e.x <= 0 ? bullets.splice(i, 1) : 0;
     });
 }
 

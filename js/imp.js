@@ -83,6 +83,8 @@ Imp.prototype.draw = function() {
             break;
             
     }
+    console.log(this.life);
+    console.log(this.player.life)
 }
 
 Imp.prototype.move = function() {
@@ -103,19 +105,18 @@ Imp.prototype.move = function() {
             this.vx = -this.player.vx;
             this.attack();
     }
-    console.log(this.vx)
-    
     this.x >= this.player.x + this.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
 }
 
 Imp.prototype.getsHit = function() {
-    this.game.player.bullets.forEach(e => {
+    this.game.player.bullets.forEach(function(e, i, arr) {
         e.x >= this.x && e.x <=  (this.x + this.w) ? (function() {
+            arr.splice(i, 1);
             this.impact = true;
+            this.life -= 50;
         }).bind(this)() : 0;
-        e.x === this.x ? this.life -= 50 : 0;
-    });
+    }.bind(this));
 }
 
 //counter from 0 to 7, relying on game fps
@@ -126,6 +127,7 @@ Imp.prototype.imgfps = function() {
 
 Imp.prototype.attack = function() {
     this.attacked = true;
+    this.game.frames % 50 === 0 ? this.player.life -= 10 : 0;
 }
 
 Imp.prototype.moving = function() {

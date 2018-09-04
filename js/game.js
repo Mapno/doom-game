@@ -4,7 +4,7 @@ function Game() {
     this.ctx = this.c.getContext("2d");
 
     //create instances for the elements of the game (bg, player & enemies)
-    this.player = new Player(this);
+    this.player = new Player(this, 100);
     this.background = new Background(this, this.player);
     this.imp = new Imp(this, this.player, 100);
 
