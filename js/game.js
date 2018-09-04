@@ -21,7 +21,6 @@ Game.prototype.start = function() {
         this.imp.getsHit();
         this.frames++;
         this.frames === 1000 ? this.frames = 0 : 0;
-        console.log(this.player.life)
     }.bind(this), 1000 / this.fps);
 }
 
@@ -74,10 +73,10 @@ Game.prototype.win = function() {
     this.imp ? 0 : (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)();
 }
 
-Game.prototype.lose = function() {
-    this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop()}).bind(this)()
-    // confirm("GAME OVER. Play again?") ? (function() {this.reset();this.start()})() : 0;
-}
+// Game.prototype.lose = function() {
+//     this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop()}).bind(this)()
+//     // confirm("GAME OVER. Play again?") ? (function() {this.reset();this.start()})() : 0;
+// }
 
 Game.prototype.stop = function() {
     clearInterval(this.interval);
@@ -105,11 +104,8 @@ Game.prototype.reset = function() {
     this.defeat = new Image();
     this.defeat.src = "./assets/defeat.png";
 }
-Game.prototype.gameOver = function() {
-    this.stop();
-    
-    if(confirm("GAME OVER. Play again?")) {
-      this.reset();
-      this.start();
-    }
+
+Game.prototype.lose = function() {
+    this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop(); setTimeout(function(){if(confirm("Play Again?")){this.reset(); this.start()} }.bind(this), 100);
+}).bind(this)()
   };

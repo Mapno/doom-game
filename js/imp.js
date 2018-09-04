@@ -72,10 +72,6 @@ Imp.prototype.draw = function() {
         case this.dead && this.frameDying <= 7:
             this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
             break;
-        // case this.frameDying === 8:
-        //     console.log("entra")
-        //     delete this;
-        //     break;
         case this.impact:
             this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
             setTimeout(function(){
