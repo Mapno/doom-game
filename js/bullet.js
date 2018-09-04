@@ -12,7 +12,7 @@ function Bullet(player, game, x, y) {
 
 Bullet.prototype.draw = function() {
     this.game.ctx.beginPath();
-    this.game.ctx.fillStyle = "grey";
+    this.game.ctx.fillStyle = "white";
     this.game.ctx.rect(this.x, this.y, this.w, this.h);
     this.game.ctx.fill();
     this.game.ctx.closePath();

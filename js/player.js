@@ -18,7 +18,7 @@ function Player(game) {
 
     this.shooted = false; //variable that registers if playes has shooted so draw method paints shooting frame
 
-    //frameIndex is a frame counter which is slower than the base frame counter for the game. It counts up till 8, bc number of frames bg has
+    //frameIndex is a frame counter which is slower than the base frame counter for the game
     this.frameIndex = 0;
 
     this.bullets = []; //array that stores the bullets the player shoots
