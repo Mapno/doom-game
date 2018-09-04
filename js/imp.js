@@ -1,4 +1,4 @@
-function Imp(game, player) {
+function Imp(game, player, life) {
     this.x = 650;
     this.y = 210;
     this.direction = false; //true -> right; false -> left
@@ -8,6 +8,9 @@ function Imp(game, player) {
     this.h = 51;
     this.impact = false;
     this.frameIndex = 0;
+    this.life = life;
+    this.dead = false;
+    this.frameIndexDie = 0;
     // this.attacked = false;
 
     this.game = game;
@@ -39,17 +42,22 @@ Imp.prototype.getImages = function() {
         img.src = "./assets/sprites/imp/attackLeft" + i + ".png";
         this.attackLeft.push(img);
     }
+
+    this.dieArr = [];
+    for(let i = 1; i <= 8; i++){
+        img = new Image();
+        img.src = "./assets/sprites/imp/die" + i + ".png";
+        this.dieArr.push(img);
+    }
+
+
 }
 
 Imp.prototype.draw = function() {
-    this.imgfps();
     switch(true) {
-        // case this.attacked:
-        //     this.direction ? this.game.ctx.drawImage(this.attackRight[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.attackLeft[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h);
-        //     setTimeout(function(){
-        //         this.attacked = false;
-        //     }.bind(this), 100);
-        //     break;
+        case this.life <= 0:
+            this.game.ctx.drawImage(this.dieArr[this.frameIndexDie], this.x, this.y, this.w, this.h);
+            break;
         case this.impact:
             this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
             setTimeout(function(){
@@ -57,7 +65,7 @@ Imp.prototype.draw = function() {
             }.bind(this), 100);
             break;
         case true:
-            this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y, this.w, this.h);
+            this.direction ? this.game.ctx.drawImage(this.imgMoveRight[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgMoveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h);
             break;
 
     }
@@ -85,13 +93,15 @@ Imp.prototype.getsHit = function() {
     this.game.player.bullets.forEach(e => {
         e.x >= this.x && e.x <=  (this.x + this.w) ? (function() {
             this.impact = true;
+            this.diefps();
         }).bind(this)() : 0;
+        e.x === this.x ? this.life -= 50 : 0;
     });
 }
 
 Imp.prototype.imgfps = function() {
-    this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
-    this.frameIndex === 4 ? this.frameIndex = 0 : 0;
+    this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
+    this.frameIndex === 8 ? this.frameIndex = 0 : 0;
 }
 
 // Imp.prototype.attack = function() {

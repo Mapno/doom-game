@@ -1,30 +1,41 @@
 function Player(game) {
-
-    this.x = 100;
+    //basic element positions and measurements
+    this.x = 20;
     this.y = 210;
     this.y0 = this.y;
     this.x0 = this.x;
-    this.game = game;
-    this.vx = 0;
-    this.vy = 0;
     this.w = 40;
     this.h = 54;
+
+    //fetch the game so it can paint on the canvas obj
+    this.game = game;
+
+    //player initial velocities
+    this.vx = 0;
+    this.vy = 0;
+
     this.direction = true; //true -> right; false -> left
-    this.shooted = false;
+
+    this.shooted = false; //variable that registers if playes has shooted so draw method paints shooting frame
+
+    //frameIndex is a frame counter which is slower than the base frame counter for the game. It counts up till 8, bc number of frames bg has
     this.frameIndex = 0;
 
-    this.bullets = [];
+    this.bullets = []; //array that stores the bullets the player shoots
 
-    this.eventListener();
+    this.eventListener(); //this method is initalized when instance is created. creates the listeners for the keys events
 
     this.movements = {
         right: false,
         left: false,
         up: false,
         shoot: false
-    };
+    }; //contains properties of player main actions initalized to 0. this resolves simultaneous actions problems and key input delay when key is hold
 }
 
+//draw method for player. case 1 -> shoot || case 2 -> still || case 3 -> move
+//this.direction determines side player faces (left/right)
+//delay is added for shoot for more fluent animation
 Player.prototype.draw = function() {
     switch(true) {
         case this.shooted:
@@ -33,27 +44,32 @@ Player.prototype.draw = function() {
                 this.shooted = false;
             }.bind(this), 50);
             break;
-        case this.vx < 0:
-            this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
-            break;
-        case this.vx > 0:
-            this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y);
-            break;
         case this.vx === 0:
             this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
+            break;
+        case true: 
+            this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
     }
 
+    this.drawBullets();
+}
+
+//calls bullet draw method
+Player.prototype.drawBullets = function() {
     this.bullets.forEach(function(e){
         e.draw();
     });
 }
 
+//gets images for player
 Player.prototype.getImages = function() {
+    //still imgs
     this.imgStillRight = new Image();
     this.imgStillRight.src = "./assets/sprites/doom-guy/stillRight.png";
     this.imgStillLeft = new Image();
     this.imgStillLeft.src = "./assets/sprites/doom-guy/stillLeft.png";
 
+    //moving array imgs
     var img;
     this.imgMoveRight = [];
     for(let i = 1; i <= 6; i++) {
@@ -68,18 +84,20 @@ Player.prototype.getImages = function() {
         this.imgMoveLeft.push(img);
     }
 
+    //shoot imgs
     this.imgShootRight = new Image();
     this.imgShootRight.src = "./assets/sprites/doom-guy/shootRight.png";
     this.imgShootLeft = new Image();
     this.imgShootLeft.src = "./assets/sprites/doom-guy/shootLeft.png";
 }
 
+//movement in x axis.
 Player.prototype.moveX = function() {
     if(this.movements.right) {
         this.vx = 2;
         this.x += this.vx;
     } else if(this.movements.left) {
-        this.x <= 50 ? this.vx = 0 : this.vx = -2;
+        this.x <= this.x0 ? this.vx = 0 : this.vx = -2; //stops player from moving left from where it spawned
         this.x += this.vx;
     } else {
         this.vx = 0;
@@ -94,18 +112,19 @@ Player.prototype.moveY = function() {
       }
 }
 
+//executes movement for player and bullets. when bullets exit the canvas are eliminated
 Player.prototype.move = function() {
-    this.imgfps();
     this.moveX();
     this.moveY();
     this.bullets.forEach(function(e, i, bullets){
         e.move();
-        e.x >= e.game.c.width ? bullets.shift() : 0;
+        e.x >= e.game.c.width || e.x <= 0 ? bullets.shift() : 0;
     });
 }
 
 var gravity = 0.4;
 
+//jumping method
 Player.prototype.jump = function() {
     
     if (this.movements.up && this.y == this.y0) {
@@ -121,6 +140,7 @@ const KEY_LEFT = 37;
 const KEY_UP = 38;
 const SHIFT = 16;
 
+//method to listen to key inputs. sets action property to true until key is released
 Player.prototype.eventListener = function() {
     document.onkeydown = function(e) {
         switch(e.keyCode) {
@@ -163,8 +183,9 @@ Player.prototype.shoot = function() {
     this.bullets.push(bullet);
 };
 
+//counter from 0 to 3, relying on game fps
 Player.prototype.imgfps = function() {
-    this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
+    this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 3 ? this.frameIndex = 0 : 0;
     
 }

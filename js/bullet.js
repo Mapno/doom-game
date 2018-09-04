@@ -8,7 +8,6 @@ function Bullet(player, game, x, y) {
     this.gravity = 0.25;
     this.w = 5;
     this.h = 1;
-    // this.player.vx > 0 ? this.vx += this.player.vx : 0;
 }
 
 Bullet.prototype.draw = function() {
