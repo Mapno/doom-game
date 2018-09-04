@@ -41,9 +41,8 @@ function Player(game, life) {
 //delay is added for shoot for more fluent animation
 Player.prototype.draw = function() {
     switch(true) {
-        case this.dead:
+        case this.dead && this.frameDying <= 7:
             this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
-            this.frameDying === 200 ? this.delete() : 0;
             break;
         case this.shooted:
             this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y);
@@ -51,10 +50,10 @@ Player.prototype.draw = function() {
                 this.shooted = false;
             }.bind(this), 50);
             break;
-        case this.vx === 0:
+        case this.vx === 0 && this.life > 0:
             this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
             break;
-        case true: 
+        case this.life > 0: 
             this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
     }
 

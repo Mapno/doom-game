@@ -3,18 +3,7 @@ function Game() {
     this.c = document.getElementById("canvas");
     this.ctx = this.c.getContext("2d");
 
-    //create instances for the elements of the game (bg, player & enemies)
-    this.player = new Player(this, 100);
-    this.background = new Background(this, this.player);
-    this.imp = new Imp(this, this.player, 100);
-
-    //frames counts every time the game executesj its main actions
-    this.frames = 0;
-
-    this.fps = 60;
-
-    this.victory = new Image();
-    this.victory.src = "./assets/victory.png";
+    this.reset();
 }
 
 Game.prototype.start = function() {
@@ -23,7 +12,7 @@ Game.prototype.start = function() {
     
     this.interval = setInterval(function(){
         this.kill();
-        this.win();
+        this.status();
         this.checkDead();
         this.clear();
         this.move();
@@ -32,6 +21,7 @@ Game.prototype.start = function() {
         this.imp.getsHit();
         this.frames++;
         this.frames === 1000 ? this.frames = 0 : 0;
+        console.log(this.player.life)
     }.bind(this), 1000 / this.fps);
 }
 
@@ -77,12 +67,49 @@ Game.prototype.checkDead = function() {
 
 Game.prototype.kill = function() {
     this.imp.frameDying === 8 ? delete this.imp : 0;
+    this.player.frameDying === 8 ? delete this.player : 0;
 }
 
 Game.prototype.win = function() {
     this.imp ? 0 : (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)();
 }
 
+Game.prototype.lose = function() {
+    this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop()}).bind(this)()
+    // confirm("GAME OVER. Play again?") ? (function() {this.reset();this.start()})() : 0;
+}
+
 Game.prototype.stop = function() {
     clearInterval(this.interval);
+}
+
+Game.prototype.status = function() {
+    this.win();
+    this.lose();
+}
+
+Game.prototype.reset = function() {
+    //create instances for the elements of the game (bg, player & enemies)
+    this.player = new Player(this, 100);
+    this.background = new Background(this, this.player);
+    this.imp = new Imp(this, this.player, 100);
+
+    //frames counts every time the game executesj its main actions
+    this.frames = 0;
+
+    this.fps = 60;
+
+    this.victory = new Image();
+    this.victory.src = "./assets/victory.png";
+
+    this.defeat = new Image();
+    this.defeat.src = "./assets/defeat.png";
+}
+Game.prototype.gameOver = function() {
+    this.stop();
+    
+    if(confirm("GAME OVER. Play again?")) {
+      this.reset();
+      this.start();
+    }
   };

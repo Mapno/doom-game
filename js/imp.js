@@ -95,7 +95,8 @@ Imp.prototype.draw = function() {
 Imp.prototype.move = function() {
     switch(true) {
         case this.dead:
-
+            this.vx = -this.player.vx;
+            break;
         case this.impact:
             this.vx = 0;
             this.moving();
@@ -108,7 +109,7 @@ Imp.prototype.move = function() {
             this.player.vx ? this.vx = 1 - this.player.vx : this.vx = 1;
             this.moving();
             break;
-        case this.x <= this.player.x + this.player.w -1 && this.x + this.w >= this.player.x + 1 && this.y + this.h >= this.player.y:
+        case this.x <= this.player.x + this.player.w -20 && this.x + this.w >= this.player.x + 20 && this.y + this.h >= this.player.y + 50:
             this.vx = -this.player.vx;
             this.attack();
     }
@@ -134,7 +135,7 @@ Imp.prototype.imgfps = function() {
 
 Imp.prototype.attack = function() {
     this.attacked = true;
-    this.game.frames % 50 === 0 ? this.player.life -= 10 : 0;
+    this.game.frames % 50 === 0 ? this.player.life -= 50 : 0;
 }
 
 Imp.prototype.moving = function() {
