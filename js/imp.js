@@ -1,6 +1,8 @@
 function Imp(game, player, life) {
+    // Enemy.call(this, game, player, life)
+
     //basic element positions and measurements
-    this.x = 650;
+    this.x = 700;
     this.y = 210;
     this.vx = -1;
     this.w = 38;
@@ -20,6 +22,9 @@ function Imp(game, player, life) {
     
     this.frameDying = 0;
 }
+
+
+
 
 Imp.prototype.getImages = function() {
     //impact images
@@ -67,7 +72,6 @@ Imp.prototype.getImages = function() {
 }
 
 Imp.prototype.draw = function() {
-    console.log(this.frameDying);
     switch(true) {
         case this.dead && this.frameDying <= 7:
             this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);

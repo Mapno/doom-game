@@ -73,10 +73,6 @@ Game.prototype.win = function() {
     this.imp ? 0 : (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)();
 }
 
-// Game.prototype.lose = function() {
-//     this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop()}).bind(this)()
-//     // confirm("GAME OVER. Play again?") ? (function() {this.reset();this.start()})() : 0;
-// }
 
 Game.prototype.stop = function() {
     clearInterval(this.interval);
@@ -99,10 +95,10 @@ Game.prototype.reset = function() {
     this.fps = 60;
 
     this.victory = new Image();
-    this.victory.src = "./assets/victory.png";
+    this.victory.src = "./assets/other/victory.png";
 
     this.defeat = new Image();
-    this.defeat.src = "./assets/defeat.png";
+    this.defeat.src = "./assets/other/defeat.png";
 }
 
 Game.prototype.lose = function() {
