@@ -128,7 +128,7 @@ var gravity = 0.4;
 Player.prototype.jump = function() {
     
     if (this.movements.up && this.y == this.y0) {
-        this.vy = -8;
+        this.vy = -10;
         this.y += this.vy;
     } else {
         this.vy += gravity;

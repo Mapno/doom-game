@@ -48,6 +48,12 @@ Imp.prototype.getImages = function() {
         img.src = "./assets/sprites/imp/attackLeft" + i + ".png";
         this.attackLeft.push(img);
     }
+    this.attackRight = [];
+    for(let i = 1; i <= 2; i++) {
+        img = new Image();
+        img.src = "./assets/sprites/imp/attackRight" + i + ".png";
+        this.attackRight.push(img);
+    }
 
     //die imgs
     this.dieArr = [];
@@ -69,10 +75,13 @@ Imp.prototype.draw = function() {
                 this.impact = false;
             }.bind(this), 100);
             break;
+        case this.attacked:
+            this.direction ? this.game.ctx.drawImage(this.attackRight[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.attackLeft[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h)
+            break;
         case this.vx < 0 || this.vx > 0:
             this.direction ? this.game.ctx.drawImage(this.imgMoveRight[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgMoveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h);
             break;
-
+            
     }
 }
 
@@ -80,17 +89,21 @@ Imp.prototype.move = function() {
     switch(true) {
         case this.impact:
             this.vx = 0;
+            this.moving();
             break;
         case this.x > this.player.x + this.player.w:
-            this.player.vx ? this.vx = -1 - this.player.vx : this.vx = -1
+            this.player.vx ? this.vx = -1 - this.player.vx : this.vx = -1;
+            this.moving();
             break;
         case this.x + this.w < this.player.x:
             this.player.vx ? this.vx = 1 - this.player.vx : this.vx = 1;
+            this.moving();
             break;
-        case this.x <= this.player.x + this.player.w -1 && this.x + this.w >= this.player.x + 1:
-            this.vx = 0;
-            // this.attack();
+        case this.x <= this.player.x + this.player.w -1 && this.x + this.w >= this.player.x + 1 && this.y + this.h >= this.player.y:
+            this.vx = -this.player.vx;
+            this.attack();
     }
+    console.log(this.vx)
     
     this.x >= this.player.x + this.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
@@ -111,6 +124,10 @@ Imp.prototype.imgfps = function() {
     this.frameIndex === 8 ? this.frameIndex = 0 : 0;
 }
 
-// Imp.prototype.attack = function() {
-//     this.x <= this.player.x + this.player.w && this.x >= this.player.x ? this.attacked = true : this.attacked = false;
-// }
+Imp.prototype.attack = function() {
+    this.attacked = true;
+}
+
+Imp.prototype.moving = function() {
+    this.attacked = false;
+}
