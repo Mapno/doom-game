@@ -22,6 +22,7 @@ function Player(game, life) {
 
     //frameIndex is a frame counter which is slower than the base frame counter for the game
     this.frameIndex = 0;
+    this.frameDying = 0;
 
     this.bullets = []; //array that stores the bullets the player shoots
 
@@ -40,6 +41,10 @@ function Player(game, life) {
 //delay is added for shoot for more fluent animation
 Player.prototype.draw = function() {
     switch(true) {
+        case this.dead:
+            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+            this.frameDying === 200 ? this.delete() : 0;
+            break;
         case this.shooted:
             this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y);
             setTimeout(function() {
@@ -91,6 +96,13 @@ Player.prototype.getImages = function() {
     this.imgShootRight.src = "./assets/sprites/doom-guy/shootRight.png";
     this.imgShootLeft = new Image();
     this.imgShootLeft.src = "./assets/sprites/doom-guy/shootLeft.png";
+
+    this.dieArr = [];
+    for(let i = 1; i <= 8; i++) {
+        img = new Image();
+        img.src = './assets/sprites/doom-guy/die' + i + '.png';
+        this.dieArr.push(img);
+    }
 }
 
 //movement in x axis.
@@ -190,4 +202,9 @@ Player.prototype.imgfps = function() {
     this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 3 ? this.frameIndex = 0 : 0;
     
+}
+
+Player.prototype.dying = function() {
+    this.dead = true;
+    this.game.frames % 10 === 0 ? this.frameDying++ : 0;
 }

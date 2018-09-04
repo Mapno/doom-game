@@ -19,6 +19,7 @@ Game.prototype.start = function() {
     this.fetch();
 
     this.interval = setInterval(function(){
+        this.checkDead();
         this.clear();
         this.move();
         this.draw();
@@ -64,3 +65,7 @@ Game.prototype.fpsFunction = function() {
     this.imp.imgfps();
 }
 
+Game.prototype.checkDead = function() {
+    this.player.life <= 0 ? this.player.dying() : 0;
+    this.imp.life <= 0 ? this.imp.dying() : 0;
+}

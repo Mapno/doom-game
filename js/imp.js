@@ -6,17 +6,19 @@ function Imp(game, player, life) {
     this.w = 38;
     this.h = 51;
     this.life = life;
-
+    
     this.frameIndex = 0; //frameIndex is a frame counter which is slower than the base frame counter for the game
-
+    
     this.direction = false; //true -> right; false -> left
-
+    
     this.player = player; //gets player so it can acces to its position and velocity
-
+    
     this.impact = false; //properties to display correct frames
     this.dead = false;
-
+    
     this.game = game; //fetch the game so it can paint on the canvas obj
+    
+    this.frameDying = 0;
 }
 
 Imp.prototype.getImages = function() {
@@ -66,9 +68,10 @@ Imp.prototype.getImages = function() {
 
 Imp.prototype.draw = function() {
     switch(true) {
-        // case this.life <= 0:
-            // this.game.ctx.drawImage(this.dieArr[this.frameIndexDie], this.x, this.y, this.w, this.h);
-            // break;
+        case this.dead:
+            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+            this.frameDying === 200 ? this.delete() : 0;
+            break;
         case this.impact:
             this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
             setTimeout(function(){
@@ -89,6 +92,8 @@ Imp.prototype.draw = function() {
 
 Imp.prototype.move = function() {
     switch(true) {
+        case this.dead:
+
         case this.impact:
             this.vx = 0;
             this.moving();
@@ -132,4 +137,9 @@ Imp.prototype.attack = function() {
 
 Imp.prototype.moving = function() {
     this.attacked = false;
+}
+
+Imp.prototype.dying = function() {
+    this.dead = true;
+    this.game.frames % 10 === 0 ? this.frameDying++ : 0;
 }
