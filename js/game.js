@@ -12,13 +12,18 @@ function Game() {
     this.frames = 0;
 
     this.fps = 60;
+
+    this.victory = new Image();
+    this.victory.src = "./assets/victory.png";
 }
 
 Game.prototype.start = function() {
 
     this.fetch();
-
+    
     this.interval = setInterval(function(){
+        this.kill();
+        this.win();
         this.checkDead();
         this.clear();
         this.move();
@@ -69,3 +74,15 @@ Game.prototype.checkDead = function() {
     this.player.life <= 0 ? this.player.dying() : 0;
     this.imp.life <= 0 ? this.imp.dying() : 0;
 }
+
+Game.prototype.kill = function() {
+    this.imp.frameDying === 8 ? delete this.imp : 0;
+}
+
+Game.prototype.win = function() {
+    this.imp ? 0 : (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)();
+}
+
+Game.prototype.stop = function() {
+    clearInterval(this.interval);
+  };

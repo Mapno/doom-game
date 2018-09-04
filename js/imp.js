@@ -67,11 +67,15 @@ Imp.prototype.getImages = function() {
 }
 
 Imp.prototype.draw = function() {
+    console.log(this.frameDying);
     switch(true) {
-        case this.dead:
+        case this.dead && this.frameDying <= 7:
             this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
-            this.frameDying === 200 ? this.delete() : 0;
             break;
+        // case this.frameDying === 8:
+        //     console.log("entra")
+        //     delete this;
+        //     break;
         case this.impact:
             this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
             setTimeout(function(){
@@ -86,8 +90,6 @@ Imp.prototype.draw = function() {
             break;
             
     }
-    console.log(this.life);
-    console.log(this.player.life)
 }
 
 Imp.prototype.move = function() {
