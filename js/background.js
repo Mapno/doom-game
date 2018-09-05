@@ -15,6 +15,8 @@ function Background(game, player) {
 
     //frameIndex is a frame counter which is slower than the base frame counter for the game. It counts up till 8, bc number of frames bg has
     this.frameIndex = 0;
+
+    this.getImages();
 }
 
 

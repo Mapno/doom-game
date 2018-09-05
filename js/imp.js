@@ -7,6 +7,11 @@ function Imp(game, player, life) {
     this.vx = -1;
     this.w = 38;
     this.h = 51;
+
+    this.frameIndex = 0; //frameIndex is a frame counter which is slower than the base frame counter for the game
+
+    this.getImages();
+
 }
 
 Imp.prototype = Object.create(Enemy.prototype);

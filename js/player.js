@@ -9,6 +9,8 @@ function Player(game, life) {
 
     this.life = life;
 
+    this.getImages();
+
     //fetch the game so it can paint on the canvas obj
     this.game = game;
 

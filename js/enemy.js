@@ -1,7 +1,6 @@
 function Enemy(game, player, life) {
     this.life = life;
 
-    this.frameIndex = 0; //frameIndex is a frame counter which is slower than the base frame counter for the game
     
     this.direction = false; //true -> right; false -> left
     
