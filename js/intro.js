@@ -50,6 +50,7 @@ Intro.prototype.eventListener = function() {
                 break;
             case K_DOWN:
                 this.arrow.i--;
+                this.arrow.i < 0 ? this.arrow.i = 1 : 0;
         }
     }.bind(this)
 };
