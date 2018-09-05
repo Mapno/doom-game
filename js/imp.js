@@ -1,5 +1,5 @@
-function Imp(game, player, life, x) {
-    Enemy.call(this, game, player, life)
+function Imp(game, life, x) {
+    Enemy.call(this, game, life)
 
     //basic element positions and measurements
     this.x = x;
@@ -18,7 +18,7 @@ Imp.prototype = Object.create(Enemy.prototype);
 Imp.prototype.constructor = Imp;
 
 
-Imp.prototype.getImages = function() {
+Imp.prototype.getImages = function () {
     //impact images
     this.impactLeft = new Image();
     this.impactLeft.src = "./assets/sprites/imp/hitLeft.png";
@@ -28,13 +28,13 @@ Imp.prototype.getImages = function() {
     //move imgs
     var img;
     this.moveRight = [];
-    for(let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
         img = new Image();
         img.src = './assets/sprites/imp/right' + i + '.png';
         this.moveRight.push(img);
     }
     this.moveLeft = [];
-    for(let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
         img = new Image();
         img.src = './assets/sprites/imp/left' + i + '.png';
         this.moveLeft.push(img);
@@ -42,13 +42,13 @@ Imp.prototype.getImages = function() {
 
     //attack imgs
     this.attackLeft = [];
-    for(let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 2; i++) {
         img = new Image();
         img.src = "./assets/sprites/imp/attackLeft" + i + ".png";
         this.attackLeft.push(img);
     }
     this.attackRight = [];
-    for(let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 2; i++) {
         img = new Image();
         img.src = "./assets/sprites/imp/attackRight" + i + ".png";
         this.attackRight.push(img);
@@ -56,39 +56,39 @@ Imp.prototype.getImages = function() {
 
     //die imgs
     this.dieArr = [];
-    for(let i = 1; i <= 8; i++){
+    for (let i = 1; i <= 8; i++) {
         img = new Image();
         img.src = "./assets/sprites/imp/die" + i + ".png";
         this.dieArr.push(img);
     }
 }
 
-Imp.prototype.move = function() {
-    switch(true) {
+Imp.prototype.move = function () {
+    switch (true) {
         case this.dead:
-            this.vx = -this.player.vx;
+            this.vx = -this.game.player.vx;
             break;
         case this.impact:
             this.vx = 0;
             this.moving();
             break;
-        case this.x > this.player.x + this.player.w:
-            this.player.vx ? this.vx = -1 - this.player.vx : this.vx = -1;
+        case this.x > this.game.player.x + this.game.player.w:
+            this.game.player.vx ? this.vx = -1 - this.game.player.vx : this.vx = -1;
             this.moving();
             break;
-        case this.x + this.w < this.player.x:
-            this.player.vx ? this.vx = 1 - this.player.vx : this.vx = 1;
+        case this.x + this.w < this.game.player.x:
+            this.game.player.vx ? this.vx = 1 - this.game.player.vx : this.vx = 1;
             this.moving();
             break;
-        case this.x <= this.player.x + this.player.w -20 && this.x + this.w >= this.player.x + 20 && this.y + this.h >= this.player.y + 50:
-            this.vx = -this.player.vx;
+        case this.x <= this.game.player.x + this.game.player.w - 20 && this.x + this.w >= this.game.player.x + 20 && this.y + this.h >= this.game.player.y + 50:
+            this.vx = -this.game.player.vx;
             this.attack();
     }
-    this.x >= this.player.x + this.player.w / 2 ? this.direction = false : this.direction = true;
+    this.x >= this.game.player.x + this.game.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
 }
 
-Enemy.prototype.attack = function() {
+Enemy.prototype.attack = function () {
     this.attacked = true;
-    this.game.frames % 50 === 0 ? this.player.life -= 30 : 0;
+    this.game.frames % 50 === 0 ? this.game.player.life -= 30 : 0;
 }

@@ -10,14 +10,14 @@ function Bullet(player, game, x, y) {
     this.h = 1;
 }
 
-Bullet.prototype.draw = function() {
+Bullet.prototype.draw = function () {
     this.game.ctx.beginPath();
     this.game.ctx.fillStyle = "white";
     this.game.ctx.rect(this.x, this.y, this.w, this.h);
     this.game.ctx.fill();
     this.game.ctx.closePath();
-  }
+}
 
-Bullet.prototype.move = function() {
+Bullet.prototype.move = function () {
     this.x += this.vx
 }

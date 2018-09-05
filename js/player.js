@@ -41,21 +41,21 @@ function Player(game, life) {
 //draw method for player. case 1 -> shoot || case 2 -> still || case 3 -> move
 //this.direction determines side player faces (left/right)
 //delay is added for shoot for more fluent animation
-Player.prototype.draw = function() {
-    switch(true) {
+Player.prototype.draw = function () {
+    switch (true) {
         case this.dead && this.frameDying <= 7:
             this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
             break;
         case this.shooted:
             this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y);
-            setTimeout(function() {
+            setTimeout(function () {
                 this.shooted = false;
             }.bind(this), 50);
             break;
         case this.vx === 0 && this.life > 0:
             this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
             break;
-        case this.life > 0: 
+        case this.life > 0:
             this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
     }
 
@@ -63,14 +63,14 @@ Player.prototype.draw = function() {
 }
 
 //calls bullet draw method
-Player.prototype.drawBullets = function() {
-    this.bullets.forEach(function(e){
+Player.prototype.drawBullets = function () {
+    this.bullets.forEach(function (e) {
         e.draw();
     });
 }
 
 //gets images for player
-Player.prototype.getImages = function() {
+Player.prototype.getImages = function () {
     //still imgs
     this.imgStillRight = new Image();
     this.imgStillRight.src = "./assets/sprites/doom-guy/stillRight.png";
@@ -80,13 +80,13 @@ Player.prototype.getImages = function() {
     //moving array imgs
     var img;
     this.imgMoveRight = [];
-    for(let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 6; i++) {
         img = new Image();
         img.src = './assets/sprites/doom-guy/right' + i + '.png';
         this.imgMoveRight.push(img);
     }
     this.imgMoveLeft = [];
-    for(let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
         img = new Image();
         img.src = './assets/sprites/doom-guy/left' + i + '.png';
         this.imgMoveLeft.push(img);
@@ -99,7 +99,7 @@ Player.prototype.getImages = function() {
     this.imgShootLeft.src = "./assets/sprites/doom-guy/shootLeft.png";
 
     this.dieArr = [];
-    for(let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 8; i++) {
         img = new Image();
         img.src = './assets/sprites/doom-guy/die' + i + '.png';
         this.dieArr.push(img);
@@ -107,11 +107,11 @@ Player.prototype.getImages = function() {
 }
 
 //movement in x axis.
-Player.prototype.moveX = function() {
-    if(this.movements.right) {
+Player.prototype.moveX = function () {
+    if (this.movements.right) {
         this.vx = 2;
         this.x += this.vx;
-    } else if(this.movements.left) {
+    } else if (this.movements.left) {
         this.x <= this.x0 ? this.vx = 0 : this.vx = -2; //stops player from moving left from where it spawned
         this.x += this.vx;
     } else {
@@ -119,19 +119,19 @@ Player.prototype.moveX = function() {
     }
 };
 
-Player.prototype.moveY = function() {
+Player.prototype.moveY = function () {
     if (this.y >= this.y0) {
         this.y = this.y0;
-      } else {
+    } else {
         this.y += this.vy;
-      }
+    }
 }
 
 //executes movement for player and bullets. when bullets exit the canvas are eliminated
-Player.prototype.move = function() {
+Player.prototype.move = function () {
     this.moveX();
     this.moveY();
-    this.bullets.forEach(function(e, i, bullets){
+    this.bullets.forEach(function (e, i, bullets) {
         e.move();
         e.x >= e.game.c.width || e.x <= 0 ? bullets.splice(i, 1) : 0;
     });
@@ -140,8 +140,8 @@ Player.prototype.move = function() {
 var gravity = 0.4;
 
 //jumping method
-Player.prototype.jump = function() {
-    
+Player.prototype.jump = function () {
+
     if (this.movements.up && this.y == this.y0) {
         this.vy = -10;
         this.y += this.vy;
@@ -156,9 +156,9 @@ const KEY_UP = 38;
 const SHIFT = 16;
 
 //method to listen to key inputs. sets action property to true until key is released
-Player.prototype.eventListener = function() {
-    document.onkeydown = function(e) {
-        switch(e.keyCode) {
+Player.prototype.eventListener = function () {
+    document.onkeydown = function (e) {
+        switch (e.keyCode) {
             case KEY_RIGHT:
                 this.movements.right = true;
                 this.direction = true;
@@ -175,8 +175,8 @@ Player.prototype.eventListener = function() {
         }
     }.bind(this);
 
-    document.onkeyup = function(e) {
-        switch(e.keyCode) {
+    document.onkeyup = function (e) {
+        switch (e.keyCode) {
             case KEY_RIGHT:
                 this.movements.right = false;
                 break;
@@ -191,7 +191,7 @@ Player.prototype.eventListener = function() {
 }
 
 
-Player.prototype.shoot = function() {
+Player.prototype.shoot = function () {
     var bullet;
     this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
     this.shooted = true;
@@ -199,13 +199,13 @@ Player.prototype.shoot = function() {
 };
 
 //counter from 0 to 3, relying on game fps
-Player.prototype.imgfps = function() {
+Player.prototype.imgfps = function () {
     this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 3 ? this.frameIndex = 0 : 0;
-    
+
 }
 
-Player.prototype.dying = function() {
+Player.prototype.dying = function () {
     this.dead = true;
     this.game.frames % 10 === 0 ? this.frameDying++ : 0;
 }

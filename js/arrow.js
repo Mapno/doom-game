@@ -8,10 +8,8 @@ function Arrow(intro) {
     this.img.src = "./assets/other/arrow.png";
 
     this.intro = intro;
+}
 
+Arrow.prototype.draw = function () {
+    this.intro.ctx.drawImage(this.img, this.x, this.arrPostions[this.i % 2]);
 };
-
-Arrow.prototype.draw = function() {
-    this.intro.ctx.drawImage(this.img, this.x ,this.arrPostions[this.i % 2]);
-};
-        

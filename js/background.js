@@ -38,16 +38,16 @@ Background.prototype.draw = function () {
 
 
 //moves the bg according to player movement & velocity. when bg moves an entire game screen, it moves back to original position
-Background.prototype.move = function() {
+Background.prototype.move = function () {
     this.player.x >= this.player.x0 ? this.x -= this.player.vx : 0;
 
     this.x < -this.game.c.width || this.x > 0 ? this.x = 0 : 0;
-    
+
 }
 
 //counter from 0 to 7, relying on game fps
-Background.prototype.imgfps = function() {
+Background.prototype.imgfps = function () {
     this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 8 ? this.frameIndex = 0 : 0;
-    
+
 }
