@@ -119,7 +119,7 @@ Imp.prototype.move = function() {
 
 Imp.prototype.getsHit = function() {
     this.game.player.bullets.forEach(function(e, i, arr) {
-        e.x >= this.x && e.x <=  (this.x + this.w) ? (function() {
+        e.x >= this.x && e.x <=  (this.x + this.w) && e.y <= this.y + this.h && e.y >= this.y ? (function() {
             arr.splice(i, 1);
             this.impact = true;
             this.life -= 50;
