@@ -1,7 +1,8 @@
-function Game() {
+function Game(intro) {
+    this.intro = intro
     //get canvas obj
-    this.c = document.getElementById("canvas");
-    this.ctx = this.c.getContext("2d");
+    this.c = this.intro.c;
+    this.ctx = this.intro.ctx;
 
     this.reset();
 }
