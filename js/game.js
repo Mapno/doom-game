@@ -100,7 +100,7 @@ Game.prototype.reset = function() {
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];
-  this.enemyArr.push(new Imp(this, this.player, 200));
+  this.enemyArr.push(new Imp(this, this.player, 200, 700));
 
   //frames counts every time the game executesj its main actions
   this.frames = 1;
@@ -115,7 +115,6 @@ Game.prototype.reset = function() {
 };
 
 Game.prototype.lose = function() {
-  console.log(this.player)
   this.player
     ? 0
     : function() {
@@ -138,7 +137,7 @@ Game.prototype.lose = function() {
 };
 
 Game.prototype.enemyGenerator = function() {
-  this.enemyArr.push(new Imp(this, this.player, 200));
+  this.enemyArr.push(new Imp(this, this.player, 200, Math.floor(Math.random() * 500 + 600)));
 };
 
 Game.prototype.getsHit = function() {

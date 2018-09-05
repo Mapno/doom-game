@@ -1,8 +1,8 @@
-function Imp(game, player, life) {
+function Imp(game, player, life, x) {
     Enemy.call(this, game, player, life)
 
     //basic element positions and measurements
-    this.x = 700;
+    this.x = x;
     this.y = 210;
     this.vx = -1;
     this.w = 38;
@@ -86,4 +86,9 @@ Imp.prototype.move = function() {
     }
     this.x >= this.player.x + this.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
+}
+
+Enemy.prototype.attack = function() {
+    this.attacked = true;
+    this.game.frames % 50 === 0 ? this.player.life -= 30 : 0;
 }

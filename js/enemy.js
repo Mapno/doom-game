@@ -52,10 +52,7 @@ Enemy.prototype.imgfps = function() {
     this.frameIndex === 8 ? this.frameIndex = 0 : 0;
 }
 
-Enemy.prototype.attack = function() {
-    this.attacked = true;
-    this.game.frames % 50 === 0 ? this.player.life -= 50 : 0;
-}
+
 
 Enemy.prototype.moving = function() {
     this.attacked = false;
