@@ -13,15 +13,17 @@ Game.prototype.start = function() {
     
     this.interval = setInterval(function(){
         this.kill();
-        this.status();
         this.checkDead();
         this.clear();
+        // this.enemyGenerator();
         this.move();
         this.draw();
         this.fpsFunction();
-        this.imp.getsHit();
+        this.getsHit();
         this.frames++;
         this.frames === 1000 ? this.frames = 0 : 0;
+        this.status();
+        console.log(this.enemyArr.length)
     }.bind(this), 1000 / this.fps);
 }
 
@@ -29,7 +31,9 @@ Game.prototype.start = function() {
 Game.prototype.fetch = function() {
     this.background.getImages();
     this.player.getImages();
-    this.imp.getImages();
+    this.enemyArr.forEach( e => {
+        e.getImages();
+    })
 }
 
 //executes movements of all game elements (player & bullets, bg & enemies)
@@ -37,7 +41,9 @@ Game.prototype.move = function() {
     this.player.move();
     this.player.jump();
     this.background.move();
-    this.imp.move();
+    this.enemyArr.forEach( e => {
+        e.move();
+    })
 }
 
 //clears the entire canvas before painting next frame
@@ -50,28 +56,36 @@ Game.prototype.clear = function() {
 Game.prototype.draw = function() {
     this.background.draw();
     this.player.draw();
-    this.imp.draw();
+    this.enemyArr.forEach( e => {
+        e.draw();
+    })
 }
 
 //executes the frame counter for every element of game
 Game.prototype.fpsFunction = function() {
     this.background.imgfps();
     this.player.imgfps();
-    this.imp.imgfps();
+    this.enemyArr.forEach( e => {
+        e.imgfps();
+    })
 }
 
 Game.prototype.checkDead = function() {
     this.player.life <= 0 ? this.player.dying() : 0;
-    this.imp.life <= 0 ? this.imp.dying() : 0;
+    this.enemyArr.forEach( e => {
+        e.life <= 0 ? e.dying() : 0;
+    })
 }
 
 Game.prototype.kill = function() {
-    this.imp.frameDying === 8 ? delete this.imp : 0;
+    this.enemyArr.forEach(function(e, i, arr) {
+        e.frameDying === 8 ? arr.splice(i, 1) : 0;
+    })
     this.player.frameDying === 8 ? delete this.player : 0;
 }
 
 Game.prototype.win = function() {
-    this.imp ? 0 : (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)();
+    this.enemyArr.length === 0 ? (function() {this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2); this.stop()}).bind(this)() : 0;
 }
 
 
@@ -88,7 +102,7 @@ Game.prototype.reset = function() {
     //create instances for the elements of the game (bg, player & enemies)
     this.player = new Player(this, 100);
     this.background = new Background(this, this.player);
-    this.imp = new Imp(this, this.player, 100);
+    this.enemyArr = [new Imp(this, this.player, 200)];
 
     //frames counts every time the game executesj its main actions
     this.frames = 0;
@@ -103,6 +117,19 @@ Game.prototype.reset = function() {
 }
 
 Game.prototype.lose = function() {
-    this.player ? 0 : (function() {this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2); this.stop(); setTimeout(function(){if(confirm("Play Again?")){this.reset(); this.start()} }.bind(this), 100);
-}).bind(this)()
-  };
+    this.player ? 0 : (function () {
+        this.ctx.drawImage(this.defeat, this.c.width / 2 - this.defeat.width / 2, this.c.height / 2 - this.defeat.height / 2);
+        this.stop();
+        setTimeout(function () { if (confirm("Play Again?")) { this.reset(); this.start() } }.bind(this), 100);
+    }).bind(this)()
+};
+
+Game.prototype.enemyGenerator = function() {
+    this.frames % 200 ? this.enemyArr.push(new Imp(this, this.player, 300)) : 0;
+}
+
+Game.prototype.getsHit = function() {
+    this.enemyArr.forEach( e => {
+        e.getsHit();
+    })
+}
