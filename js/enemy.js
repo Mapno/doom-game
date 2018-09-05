@@ -38,7 +38,7 @@ Enemy.prototype.draw = function() {
 
 Enemy.prototype.getsHit = function() {
     this.game.player.bullets.forEach(function(e, i, arr) {
-        e.x >= this.x && e.x <=  (this.x + this.w) && e.y <= this.y + this.h && e.y >= this.y ? (function() {
+        e.x >= this.x && e.x <=  (this.x + this.w) && e.y <= this.y + this.h && e.y >= this.y && this.dead === false? (function() {
             arr.splice(i, 1);
             this.impact = true;
             this.life -= 50;

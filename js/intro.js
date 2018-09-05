@@ -12,7 +12,6 @@ function Intro(){
     this.credits = new Image();
     this.credits.src = "./assets/other/credits.png";
     
-    this.eventListener();
     this.arrow = new Arrow(this);
 }
 
@@ -28,6 +27,7 @@ Intro.prototype.drawBg = function() {
 }
 
 Intro.prototype.start = function() {
+    this.eventListener();
     this.interval = setInterval(function(){
         this.clear();
         this.draw();

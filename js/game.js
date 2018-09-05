@@ -10,37 +10,25 @@ function Game(intro) {
 }
 
 Game.prototype.start = function() {
-  // this.fetch();
-
   this.interval = setInterval(
     function() {
       this.kill();
       this.checkDead();
-      this.clear();
-      if (this.frames % 100 == 0) {
+      if (this.frames % 200 == 0) {
         this.enemyGenerator();
       }
       this.move();
+      this.clear();
       this.draw();
+      this.status();
       this.fpsFunction();
       this.getsHit();
       this.frames++;
       this.frames === 1000 ? (this.frames = 0) : 0;
-      this.status();
-      console.log(this.enemyArr.length);
     }.bind(this),
     1000 / this.fps
   );
 };
-
-//fetch gets the images for the constructors
-// Game.prototype.fetch = function() {
-//   this.background.getImages();
-//   this.player.getImages();
-//   this.enemyArr.forEach(e => {
-//     e.getImages();
-//   });
-// };
 
 //executes movements of all game elements (player & bullets, bg & enemies)
 Game.prototype.move = function() {
@@ -92,11 +80,7 @@ Game.prototype.kill = function() {
 Game.prototype.win = function() {
   this.enemyArr.length === 0
     ? function() {
-        this.ctx.drawImage(
-          this.victory,
-          this.c.width / 2 - this.victory.width / 2,
-          this.c.height / 2 - this.victory.height / 2
-        );
+        this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2);
         this.stop();
       }.bind(this)()
     : 0;
@@ -119,7 +103,7 @@ Game.prototype.reset = function() {
   this.enemyArr.push(new Imp(this, this.player, 200));
 
   //frames counts every time the game executesj its main actions
-  this.frames = 0;
+  this.frames = 1;
 
   this.fps = 60;
 
@@ -131,31 +115,30 @@ Game.prototype.reset = function() {
 };
 
 Game.prototype.lose = function() {
+  console.log(this.player)
   this.player
     ? 0
     : function() {
+      console.log('entra');
         this.ctx.drawImage(
           this.defeat,
           this.c.width / 2 - this.defeat.width / 2,
           this.c.height / 2 - this.defeat.height / 2
         );
         this.stop();
-        setTimeout(
-          function() {
-            if (confirm("Play Again?")) {
-              this.reset();
-              this.start();
-            }
-          }.bind(this),
-          100
-        );
+        // setTimeout(
+        //   function() {
+        //     if (confirm("Play Again?")) {
+        //       this.intro.start();
+        //     }
+        //   }.bind(this),
+        //   400
+        // );
       }.bind(this)();
 };
 
 Game.prototype.enemyGenerator = function() {
-
   this.enemyArr.push(new Imp(this, this.player, 200));
-  // this.frames % 200 === 0 ? this.enemyArr.push(new Imp(this, this.player, 300)) : 0;
 };
 
 Game.prototype.getsHit = function() {
