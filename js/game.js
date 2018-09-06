@@ -6,6 +6,8 @@ function Game(intro) {
   this.k = 0;
 
   this.reset();
+
+  // this.platformGenerator();
 }
 
 Game.prototype.start = function () {
@@ -13,9 +15,9 @@ Game.prototype.start = function () {
     function () {
       this.kill();
       this.checkDead();
-      // if (this.frames % 200 == 0) {
-      //   this.enemyGenerator();
-      // }
+      if (this.frames % 200 == 0) {
+        if(this.enemyArr.length < 10){this.enemyGenerator()};
+      }
       this.move();
       this.clear();
       this.draw();
@@ -51,6 +53,9 @@ Game.prototype.draw = function () {
   this.enemyArr.forEach(e => {
     e.draw();
   });
+  this.platformArray.forEach(e => {
+    e.draw();
+  })
 };
 
 //executes the frame counter for every element of game
@@ -77,12 +82,11 @@ Game.prototype.kill = function () {
 };
 
 Game.prototype.win = function () {
-  this.enemyArr.length === 0
-    ? function () {
+  if (this.enemyArr.length === 0) {
       this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2);
       this.stop();
-    }.bind(this)()
-    : 0;
+    }
+
 };
 
 Game.prototype.stop = function () {
@@ -96,11 +100,13 @@ Game.prototype.status = function () {
 
 Game.prototype.reset = function () {
   //create instances for the elements of the game (bg, player & enemies)
+  this.platformArray = [new Platform(this, 400, 130), new Platform(this, 600, 140), new Platform(this, 900, 130), new Platform(this, 1400, 140), new Platform(this, 1500, 70)];
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];
-  this.enemyArr.push(new Imp(this, 200, 700));
-  // this.enemyArr.push(new Sergeant(this, 200, 600));
+  // this.enemyArr.push(new Imp(this, 200, 700));
+  this.enemyArr.push(new Sergeant(this, 200, 0));
+
 
   //frames counts every time the game executesj its main actions
   this.frames = 1;
@@ -134,7 +140,7 @@ Game.prototype.lose = function () {
 };
 
 Game.prototype.enemyGenerator = function () {
-  // this.enemyArr.push(new Imp(this, 200, Math.floor(Math.random() * 500 + 600)));
+  this.enemyArr.push(new Imp(this, 200, this.generateRandom()));
 };
 
 Game.prototype.getsHit = function () {
@@ -143,3 +149,17 @@ Game.prototype.getsHit = function () {
   });
   this.player.getsHit();
 };
+
+
+Game.prototype.platformGenerator = function() {
+  this.platformArray.push(new Platform(this, 400, 130));
+};
+
+Game.prototype.generateRandom = function() {
+  let rand = Math.floor(Math.random() * 400 + this.player.x)
+  if(rand >= this.player.x + 50 || rand <= this.player.x -50){
+    return this.player.x + 300;
+  } else {
+    return rand;
+  }
+}

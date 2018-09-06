@@ -99,12 +99,13 @@ Imp.prototype.move = function () {
             this.game.player.vx ? this.vx = 1 - this.game.player.vx : this.vx = 1;
             this.moving();
             break;
-        case this.x <= this.game.player.x + this.game.player.w - 20 && this.x + this.w >= this.game.player.x + 20 && this.y + this.h >= this.game.player.y + 50:
+        case this.x <= this.game.player.x + this.game.player.w - 20 && this.x + this.w >= this.game.player.x + 20 && this.y <= this.game.player.y + this.game.player.h && this.y + this.h >= this.game.player.y:
             this.vx = -this.game.player.vx;
             this.attack();
     }
     this.x >= this.game.player.x + this.game.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
+    console.log(this.y + this.h >= this.game.player.y + this.game.player.h, this.y <= this.game.player.y0)
 }
 
 Enemy.prototype.attack = function () {

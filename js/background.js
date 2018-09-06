@@ -38,6 +38,10 @@ Background.prototype.getImages = function () {
         img.src = './assets/scoreboard/' + i + '.png';
         this.numbers.push(img);
     }
+
+    this.flare = new Image();
+    this.flare.src = './assets/backgrounds/flare.png';
+    this.flarex = 1540;
 }
 
 //draws the bg twice so it is continued when player moves and white canvas doesn't appear
@@ -45,6 +49,7 @@ Background.prototype.draw = function () {
     this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x, this.y);
     this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x + this.game.c.width, this.y);
     this.drawSb();
+    this.drawElements();
 }
 
 
@@ -66,14 +71,25 @@ Background.prototype.imgfps = function () {
 Background.prototype.drawSb = function() {
     let healthy = this.game.player.life.toString();
     if(this.game.player.life < 0){ healthy = '00';}
-    this.game.ctx.drawImage(this.health, 0, 0);
+    this.game.ctx.drawImage(this.health, 0, 0, 68, 38);
     if(healthy == '100') {
         this.game.ctx.drawImage(this.numbers[1], 5, 5);
         this.game.ctx.drawImage(this.numbers[0], 20, 5);
         this.game.ctx.drawImage(this.numbers[0], 35, 5);
+        this.game.ctx.drawImage(this.percentage, 50, 5);
 
+
+    } else if (healthy.length == 2){
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 15, 5);
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[1])], 30, 5);
+        this.game.ctx.drawImage(this.percentage, 45, 5);    
     } else {
-        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 20, 5);
-        this.game.ctx.drawImage(this.numbers[parseInt(healthy[1])], 35, 5);
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 25, 5);
+        this.game.ctx.drawImage(this.percentage, 40, 5);    
     }
+}
+
+Background.prototype.drawElements = function() {
+    this.game.ctx.drawImage(this.flare, this.flarex, 0);
+    this.flarex -= this.game.player.vx;
 }

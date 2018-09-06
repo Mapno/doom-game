@@ -68,7 +68,6 @@ Player.prototype.draw = function () {
     }
 
     this.drawBullets();
-    console.log(this.impact)
 }
 
 //calls bullet draw method
@@ -135,9 +134,19 @@ Player.prototype.moveX = function () {
 
 Player.prototype.moveY = function () {
     if (this.y >= this.y0) {
-        this.y = this.y0;
+            this.y = this.y0
     } else {
+        if(this.game.platformArray.some(function(e) {
+            return this.x + this.w >= e.x &&
+            this.x < (e.x + e.w) &&
+            this.y + (this.h - 1) >= e.y &&
+            this.y <= e.y + e.h &&
+            this.vy >= 0;
+        }.bind(this))) {
+            return;
+        } else {
         this.y += this.vy;
+        }
     }
 }
 
@@ -231,7 +240,7 @@ Player.prototype.getsHit = function () {
                 if (b.x >= this.x && b.x <= (this.x + this.w) && b.y <= this.y + this.h && b.y >= this.y) {
                     arr.splice(i, 1);
                     this.impact = true;
-                    this.life -= 50;
+                    this.life -= 1;
                 }
             })
         
