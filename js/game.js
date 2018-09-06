@@ -101,7 +101,7 @@ Game.prototype.status = function () {
 
 Game.prototype.reset = function () {
   //create instances for the elements of the game (bg, player & enemies)
-  this.platformArray = [new Platform(this, this.c.width * 0.45, this.c.height * 0.55), new Platform(this, this.c.width * 0.65, this.c.height * 0.45), new Platform(this, this.c.width * 1.05, this.c.height * 0.55), new Platform(this, this.c.width * 1.55, this.c.height * 0.50), new Platform(this, this.c.width * 1.75, this.c.height * 0.35)];
+  this.platformArray = [new Platform(this, this.c.width * 0.45, this.c.height * 0.55), new Platform(this, this.c.width * 0.68, this.c.height * 0.45), new Platform(this, this.c.width * 1.05, this.c.height * 0.55), new Platform(this, this.c.width * 1.55, this.c.height * 0.50), new Platform(this, this.c.width * 1.75, this.c.height * 0.35)];
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];

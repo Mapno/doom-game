@@ -29,7 +29,7 @@ Background.prototype.getImages = function () {
         this.bgFrames.push(img);
     }
     this.health = new Image();
-    this.health.src = "./assets/scoreboard/health.png";
+    this.health.src = "./assets/scoreboard/back.png";
     this.percentage = new Image();
     this.percentage.src = "./assets/scoreboard/percentage.png";
     this.numbers = [];
@@ -72,21 +72,21 @@ Background.prototype.imgfps = function () {
 Background.prototype.drawSb = function() {
     let healthy = this.game.player.life.toString();
     if(this.game.player.life < 0){ healthy = '00';}
-    this.game.ctx.drawImage(this.health, 0, 0, 68, 38);
+    this.game.ctx.drawImage(this.health, 0, this.game.c.height - this.game.c.height * 0.15, this.game.c.width, this.game.c.height * 0.15);
     if(healthy == '100') {
-        this.game.ctx.drawImage(this.numbers[1], 5, 5);
-        this.game.ctx.drawImage(this.numbers[0], 20, 5);
-        this.game.ctx.drawImage(this.numbers[0], 35, 5);
-        this.game.ctx.drawImage(this.percentage, 50, 5);
+        this.game.ctx.drawImage(this.numbers[1], this.game.c.width * (0.005 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.028, this.game.c.height * 0.075);
+        this.game.ctx.drawImage(this.numbers[0], this.game.c.width * (0.036 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
+        this.game.ctx.drawImage(this.numbers[0], this.game.c.width * (0.074 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
+        // this.game.ctx.drawImage(this.percentage, this.game.c.width * (0.075 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
 
 
     } else if (healthy.length == 2){
-        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 15, 5);
-        this.game.ctx.drawImage(this.numbers[parseInt(healthy[1])], 30, 5);
-        this.game.ctx.drawImage(this.percentage, 45, 5);    
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], this.game.c.width * (0.036 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[1])], this.game.c.width * (0.074 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
+        // this.game.ctx.drawImage(this.percentage, this.game.c.width * 0.078, this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);    
     } else {
-        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 25, 5);
-        this.game.ctx.drawImage(this.percentage, 40, 5);    
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], this.game.c.width * (0.036 + 0.17), this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);
+        // this.game.ctx.drawImage(this.percentage, this.game.c.width * 0.078, this.game.c.height * 0.87, this.game.c.width * 0.035, this.game.c.height * 0.075);    
     }
 }
 

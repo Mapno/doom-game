@@ -103,7 +103,7 @@ Sergeant.prototype.moveX = function () {
         case this.impact:
             this.moving();
             break;
-        case this.x - this.game.player.x <= 300 && this.game.player.x - this.x <= 300 && this.game.player.y + 20 >= this.y && this.game.player.y + this.game.player.h -10 <= this.y + this.h:
+        case this.x - this.game.player.x <= 300 && this.game.player.x - this.x <= 300 && this.game.player.y + 20 >= this.y && this.game.player.y + this.game.player.h -20 <= this.y + this.h:
             this.x >= this.game.player.x + this.game.player.w / 2 ? this.direction = false : this.direction = true;
             this.vx = 0;
             this.attack();

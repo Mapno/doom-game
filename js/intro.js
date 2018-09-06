@@ -6,7 +6,7 @@ function Intro() {
 
 
     this.bg = new Image();
-    this.bg.src = "./assets/backgrounds/victorious-1.jpg";
+    this.bg.src = "./assets/backgrounds/intro.png";
 
     this.startGame = new Image();
     this.startGame.src = "./assets/other/start.png";

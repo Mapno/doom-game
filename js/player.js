@@ -124,7 +124,7 @@ Player.prototype.getImages = function () {
 //movement in x axis.
 Player.prototype.moveX = function () {
     if (this.movements.right) {
-        this.vx = 2;
+        this.vx = this.game.c.width * 0.0015;
         this.x += this.vx;
     } else if (this.movements.left) {
         this.x <= this.x0 ? this.vx = 0 : this.vx = -2; //stops player from moving left from where it spawned
@@ -168,7 +168,7 @@ var gravity = 0.4;
 Player.prototype.jump = function () {
 
     if (this.movements.up && (this.y == this.y0 || this.canJump)) {
-        this.vy = -14;
+        this.vy = -this.game.c.height * 0.015;
         this.y += this.vy;
     } else {
         this.vy += gravity;
