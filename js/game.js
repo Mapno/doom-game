@@ -133,14 +133,14 @@ Game.prototype.lose = function () {
       this.c.height / 2 - this.defeat.height / 2
     );
     this.stop();
-      // setTimeout(
-      //   function() {
-      //     if (confirm("Play Again?")) {
-      //       this.intro.start();
-      //     }
-      //   }.bind(this),
-      //   400
-      // );
+      setTimeout(
+        function() {
+          if (confirm("Play Again?")) {
+            this.intro.start();
+          }
+        }.bind(this),
+        400
+      );
     };
 };
 
