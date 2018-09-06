@@ -6,7 +6,7 @@ function Intro() {
 
 
     this.bg = new Image();
-    this.bg.src = "./assets/backgrounds/intro.png";
+    this.bg.src = "./assets/backgrounds/opening-background.jpg";
 
     this.startGame = new Image();
     this.startGame.src = "./assets/other/start.png";
@@ -24,8 +24,8 @@ Intro.prototype.draw = function () {
 
 Intro.prototype.drawBg = function () {
     this.ctx.drawImage(this.bg, 0, 0, this.c.width, this.c.height);
-    this.ctx.drawImage(this.startGame, 300, 100);
-    this.ctx.drawImage(this.credits, 300, 200);
+    this.ctx.drawImage(this.startGame, this.c.width / 2.4, this.c.height / 2);
+    this.ctx.drawImage(this.credits, this.c.width / 2.55, this.c.height / 1.5);
 }
 
 Intro.prototype.start = function () {

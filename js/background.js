@@ -41,7 +41,7 @@ Background.prototype.getImages = function () {
 
     this.flare = new Image();
     this.flare.src = './assets/backgrounds/flare.png';
-    this.flarex = this.game.c.width * 1.75;
+    this.flarex = this.game.c.width * 1.85;
 
 }
 
@@ -91,6 +91,6 @@ Background.prototype.drawSb = function() {
 }
 
 Background.prototype.drawElements = function() {
-    this.game.ctx.drawImage(this.flare, this.flarex, this.game.c.height * 0.30);
+    this.game.ctx.drawImage(this.flare, this.flarex, this.game.c.height * 0.27);
     this.flarex -= this.game.player.vx;
 }

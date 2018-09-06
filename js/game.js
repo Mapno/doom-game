@@ -17,9 +17,9 @@ Game.prototype.start = function () {
     function () {
       this.kill();
       this.checkDead();
-      // if (this.frames % 200 == 0) {
-      //   if(this.enemyCounter < 8){this.enemyGenerator()};
-      // }
+      if (this.frames % 200 == 0) {
+        if(this.enemyCounter < 8){this.enemyGenerator()};
+      }
       this.move();
       this.clear();
       this.draw();
@@ -105,11 +105,11 @@ Game.prototype.reset = function () {
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];
-  // this.enemyArr.push(new Imp(this, 200, 700));
+  this.enemyArr.push(new Imp(this, 200, 700));
   this.enemyArr.push(new Sergeant(this, 200, 0));
-  // this.enemyArr.push(new Sergeant(this, 200, 1));
-  // this.enemyArr.push(new Sergeant(this, 200, 2));
-  // this.enemyArr.push(new Sergeant(this, 200, 3));
+  this.enemyArr.push(new Sergeant(this, 200, 1));
+  this.enemyArr.push(new Sergeant(this, 200, 2));
+  this.enemyArr.push(new Sergeant(this, 200, 3));
 
 
 
