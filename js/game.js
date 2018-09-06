@@ -7,6 +7,8 @@ function Game(intro) {
 
   this.reset();
 
+  this.enemyCounter = 0;
+
   // this.platformGenerator();
 }
 
@@ -15,9 +17,9 @@ Game.prototype.start = function () {
     function () {
       this.kill();
       this.checkDead();
-      if (this.frames % 200 == 0) {
-        if(this.enemyArr.length < 10){this.enemyGenerator()};
-      }
+      // if (this.frames % 200 == 0) {
+      //   if(this.enemyCounter < 8){this.enemyGenerator()};
+      // }
       this.move();
       this.clear();
       this.draw();
@@ -78,11 +80,10 @@ Game.prototype.kill = function () {
   this.enemyArr.forEach(function (e, i, arr) {
     e.frameDying === 8 ? arr.splice(i, 1) : 0;
   });
-  this.player.frameDying === 8 ? /* delete this.player */ 0: 0;
 };
 
 Game.prototype.win = function () {
-  if (this.enemyArr.length === 0) {
+  if (this.enemyArr.length === 0 && this.player.x >= this.background.flarex) {
       this.ctx.drawImage(this.victory, this.c.width / 2 - this.victory.width / 2, this.c.height / 2 - this.victory.height / 2);
       this.stop();
     }
@@ -100,12 +101,16 @@ Game.prototype.status = function () {
 
 Game.prototype.reset = function () {
   //create instances for the elements of the game (bg, player & enemies)
-  this.platformArray = [new Platform(this, 400, 130), new Platform(this, 600, 140), new Platform(this, 900, 130), new Platform(this, 1400, 140), new Platform(this, 1500, 70)];
+  this.platformArray = [new Platform(this, this.c.width * 0.45, this.c.height * 0.55), new Platform(this, this.c.width * 0.65, this.c.height * 0.45), new Platform(this, this.c.width * 1.05, this.c.height * 0.55), new Platform(this, this.c.width * 1.55, this.c.height * 0.50), new Platform(this, this.c.width * 1.75, this.c.height * 0.35)];
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];
   // this.enemyArr.push(new Imp(this, 200, 700));
   this.enemyArr.push(new Sergeant(this, 200, 0));
+  // this.enemyArr.push(new Sergeant(this, 200, 1));
+  // this.enemyArr.push(new Sergeant(this, 200, 2));
+  // this.enemyArr.push(new Sergeant(this, 200, 3));
+
 
 
   //frames counts every time the game executesj its main actions
@@ -121,13 +126,13 @@ Game.prototype.reset = function () {
 };
 
 Game.prototype.lose = function () {
-  if(this.player.life <= 0){
+  if(this.player.frameDying === 8){
+    this.ctx.drawImage(
+      this.defeat,
+      this.c.width / 2 - this.defeat.width / 2,
+      this.c.height / 2 - this.defeat.height / 2
+    );
     this.stop();
-      this.ctx.drawImage(
-        this.defeat,
-        this.c.width / 2 - this.defeat.width / 2,
-        this.c.height / 2 - this.defeat.height / 2
-      );
       // setTimeout(
       //   function() {
       //     if (confirm("Play Again?")) {
@@ -141,6 +146,7 @@ Game.prototype.lose = function () {
 
 Game.prototype.enemyGenerator = function () {
   this.enemyArr.push(new Imp(this, 200, this.generateRandom()));
+  this.enemyCounter++;
 };
 
 Game.prototype.getsHit = function () {

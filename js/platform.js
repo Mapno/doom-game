@@ -1,10 +1,10 @@
 function Platform(game, x, y) {
+    this.game = game;
     this.x = x;
     this.y = y;
-    this.w = 120;
-    this.h = 9;
+    this.w = this.game.c.width * 0.15;
+    this.h = this.game.c.height * 0.02;
 
-    this.game = game;
 
     this.img = new Image();
     this.img.src = "./assets/backgrounds/platform.jpg";

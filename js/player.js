@@ -1,18 +1,20 @@
 function Player(game, life) {
+    //fetch the game so it can paint on the canvas obj
+    this.game = game;
     //basic element positions and measurements
     this.x = 20;
-    this.y = 210;
+    this.y = this.game.c.height * 0.63;
     this.y0 = this.y;
     this.x0 = this.x;
-    this.w = 40;
-    this.h = 54;
+    this.w = this.game.c.width * 0.06;
+    this.h = this.game.c.height * 0.10;
 
     this.life = life;
 
     this.getImages();
 
-    //fetch the game so it can paint on the canvas obj
-    this.game = game;
+    this.dead = false;
+
 
     //player initial velocities
     this.vx = 0;
@@ -46,25 +48,25 @@ function Player(game, life) {
 Player.prototype.draw = function () {
     switch (true) {
         case this.dead && this.frameDying <= 7:
-            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height, this.w * 0.70, this.dieArr[this.frameDying].height);
             break;
         case this.shooted:
-            this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y);
+            this.direction ? this.game.ctx.drawImage(this.imgShootRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgShootLeft, this.x, this.y, this.w, this.h);
             setTimeout(function () {
                 this.shooted = false;
             }.bind(this), 50);
             break;
         case this.impact:
-            this.direction ? this.game.ctx.drawImage(this.hitRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.hitLeft, this.x, this.y, this.w, this.h);
+            this.direction ? this.game.ctx.drawImage(this.hitRight, this.x, this.y, this.w * 0.75, this.h) : this.game.ctx.drawImage(this.hitLeft, this.x, this.y, this.w * 0.75, this.h);
             setTimeout(function () {
                 this.impact = false;
             }.bind(this), 100);
             break;
         case this.vx === 0 && this.life > 0:
-            this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
+            this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y, this.w, this.h);
             break;
         case this.life > 0:
-            this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y);
+            this.direction ? this.game.ctx.drawImage(this.imgMoveRight[this.frameIndex], this.x, this.y, this.w * 0.85, this.h) : this.game.ctx.drawImage(this.imgMoveLeft[this.frameIndex], this.x, this.y, this.w * 0.85, this.h);
     }
 
     this.drawBullets();
@@ -94,7 +96,7 @@ Player.prototype.getImages = function () {
         this.imgMoveRight.push(img);
     }
     this.imgMoveLeft = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 6; i++) {
         img = new Image();
         img.src = './assets/sprites/doom-guy/left' + i + '.png';
         this.imgMoveLeft.push(img);
@@ -143,7 +145,7 @@ Player.prototype.moveY = function () {
             this.y <= e.y + e.h &&
             this.vy >= 0;
         }.bind(this))) {
-            return;
+            this.canJump = true;
         } else {
         this.y += this.vy;
         }
@@ -165,12 +167,14 @@ var gravity = 0.4;
 //jumping method
 Player.prototype.jump = function () {
 
-    if (this.movements.up && this.y == this.y0) {
-        this.vy = -10;
+    if (this.movements.up && (this.y == this.y0 || this.canJump)) {
+        this.vy = -14;
         this.y += this.vy;
     } else {
         this.vy += gravity;
     }
+
+    if(this.vy != 0) { this.canJump = false}
 }
 
 const KEY_RIGHT = 39;
@@ -224,7 +228,7 @@ Player.prototype.shoot = function () {
 //counter from 0 to 3, relying on game fps
 Player.prototype.imgfps = function () {
     this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
-    this.frameIndex === 3 ? this.frameIndex = 0 : 0;
+    this.frameIndex === 6 ? this.frameIndex = 0 : 0;
 
 }
 
@@ -240,7 +244,7 @@ Player.prototype.getsHit = function () {
                 if (b.x >= this.x && b.x <= (this.x + this.w) && b.y <= this.y + this.h && b.y >= this.y) {
                     arr.splice(i, 1);
                     this.impact = true;
-                    this.life -= 1;
+                    this.life -= 40;
                 }
             })
         

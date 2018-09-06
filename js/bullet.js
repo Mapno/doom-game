@@ -6,7 +6,7 @@ function Bullet(player, game, x, y) {
     this.player.direction ? this.vx = 5 : this.vx = -5;
     this.r = 5;
     this.w = 5;
-    this.h = 1;
+    this.h = 10;
 }
 
 Bullet.prototype.draw = function () {

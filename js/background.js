@@ -41,13 +41,14 @@ Background.prototype.getImages = function () {
 
     this.flare = new Image();
     this.flare.src = './assets/backgrounds/flare.png';
-    this.flarex = 1540;
+    this.flarex = this.game.c.width * 1.75;
+
 }
 
 //draws the bg twice so it is continued when player moves and white canvas doesn't appear
 Background.prototype.draw = function () {
-    this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x, this.y);
-    this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x + this.game.c.width, this.y);
+    this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x, this.y, this.game.c.width, this.game.c.height);
+    this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x + this.game.c.width, this.y, this.game.c.width, this.game.c.height);
     this.drawSb();
     this.drawElements();
 }
@@ -90,6 +91,6 @@ Background.prototype.drawSb = function() {
 }
 
 Background.prototype.drawElements = function() {
-    this.game.ctx.drawImage(this.flare, this.flarex, 0);
+    this.game.ctx.drawImage(this.flare, this.flarex, this.game.c.height * 0.30);
     this.flarex -= this.game.player.vx;
 }

@@ -3,10 +3,10 @@ function Imp(game, life, x) {
 
     //basic element positions and measurements
     this.x = x;
-    this.y = 210;
+    this.y = this.game.c.height * 0.65;
     this.vx = -1;
-    this.w = 38;
-    this.h = 51;
+    this.w = this.game.c.width * 0.04;
+    this.h = this.game.c.height * 0.08;
 
     this.frameIndex = 0; //frameIndex is a frame counter which is slower than the base frame counter for the game
 
@@ -65,7 +65,7 @@ Imp.prototype.getImages = function () {
 Imp.prototype.draw = function () {
     switch (true) {
         case this.dead && this.frameDying <= 7:
-            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height, this.w, this.dieArr[this.frameDying].height);
             break;
         case this.impact:
             this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
@@ -77,7 +77,7 @@ Imp.prototype.draw = function () {
             this.direction ? this.game.ctx.drawImage(this.attackRight[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.attackLeft[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h)
             break;
         case this.vx < 0 || this.vx > 0:
-            this.direction ? this.game.ctx.drawImage(this.moveRight[Math.floor(this.frameIndex / 2)], this.x, this.y) : this.game.ctx.drawImage(this.moveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y);
+            this.direction ? this.game.ctx.drawImage(this.moveRight[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.moveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y, this.w, this.h);
             break;
     }
 }
@@ -105,7 +105,6 @@ Imp.prototype.move = function () {
     }
     this.x >= this.game.player.x + this.game.player.w / 2 ? this.direction = false : this.direction = true;
     this.x += this.vx;
-    console.log(this.y + this.h >= this.game.player.y + this.game.player.h, this.y <= this.game.player.y0)
 }
 
 Enemy.prototype.attack = function () {

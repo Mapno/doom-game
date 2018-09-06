@@ -1,6 +1,8 @@
 function Intro() {
     this.c = document.getElementById("canvas");
     this.ctx = this.c.getContext("2d");
+    this.c.width = window.innerWidth - 10;
+    this.c.height = window.innerHeight - 10;
 
 
     this.bg = new Image();
