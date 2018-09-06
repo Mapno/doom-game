@@ -13,9 +13,9 @@ Game.prototype.start = function () {
     function () {
       this.kill();
       this.checkDead();
-      if (this.frames % 200 == 0) {
-        this.enemyGenerator();
-      }
+      // if (this.frames % 200 == 0) {
+      //   this.enemyGenerator();
+      // }
       this.move();
       this.clear();
       this.draw();
@@ -73,7 +73,7 @@ Game.prototype.kill = function () {
   this.enemyArr.forEach(function (e, i, arr) {
     e.frameDying === 8 ? arr.splice(i, 1) : 0;
   });
-  this.player.frameDying === 8 ? delete this.player : 0;
+  this.player.frameDying === 8 ? /* delete this.player */ 0: 0;
 };
 
 Game.prototype.win = function () {
@@ -99,8 +99,8 @@ Game.prototype.reset = function () {
   this.player = new Player(this, 100);
   this.background = new Background(this, this.player);
   this.enemyArr = [];
-  // this.enemyArr.push(new Imp(this, 200, 700));
-  this.enemyArr.push(new Sergeant(this, 200, 600));
+  this.enemyArr.push(new Imp(this, 200, 700));
+  // this.enemyArr.push(new Sergeant(this, 200, 600));
 
   //frames counts every time the game executesj its main actions
   this.frames = 1;
@@ -115,15 +115,13 @@ Game.prototype.reset = function () {
 };
 
 Game.prototype.lose = function () {
-  this.player
-    ? 0
-    : function () {
+  if(this.player.life <= 0){
+    this.stop();
       this.ctx.drawImage(
         this.defeat,
         this.c.width / 2 - this.defeat.width / 2,
         this.c.height / 2 - this.defeat.height / 2
       );
-      this.stop();
       // setTimeout(
       //   function() {
       //     if (confirm("Play Again?")) {
@@ -132,7 +130,7 @@ Game.prototype.lose = function () {
       //   }.bind(this),
       //   400
       // );
-    }.bind(this)();
+    };
 };
 
 Game.prototype.enemyGenerator = function () {
@@ -143,4 +141,5 @@ Game.prototype.getsHit = function () {
   this.enemyArr.forEach(e => {
     e.getsHit();
   });
+  this.player.getsHit();
 };

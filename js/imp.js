@@ -17,7 +17,6 @@ function Imp(game, life, x) {
 Imp.prototype = Object.create(Enemy.prototype);
 Imp.prototype.constructor = Imp;
 
-
 Imp.prototype.getImages = function () {
     //impact images
     this.impactLeft = new Image();
@@ -63,6 +62,26 @@ Imp.prototype.getImages = function () {
     }
 }
 
+Imp.prototype.draw = function () {
+    switch (true) {
+        case this.dead && this.frameDying <= 7:
+            this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+            break;
+        case this.impact:
+            this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
+            setTimeout(function () {
+                this.impact = false;
+            }.bind(this), 100);
+            break;
+        case this.attacked:
+            this.direction ? this.game.ctx.drawImage(this.attackRight[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.attackLeft[Math.floor(this.frameIndex / 4)], this.x, this.y, this.w, this.h)
+            break;
+        case this.vx < 0 || this.vx > 0:
+            this.direction ? this.game.ctx.drawImage(this.moveRight[Math.floor(this.frameIndex / 2)], this.x, this.y) : this.game.ctx.drawImage(this.moveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y);
+            break;
+    }
+}
+
 Imp.prototype.move = function () {
     switch (true) {
         case this.dead:
@@ -90,5 +109,8 @@ Imp.prototype.move = function () {
 
 Enemy.prototype.attack = function () {
     this.attacked = true;
-    this.game.frames % 50 === 0 ? this.game.player.life -= 30 : 0;
+    if(this.game.frames % 50 === 0){
+        this.game.player.life -= 30;
+        this.game.player.impact = true;
+    }
 }

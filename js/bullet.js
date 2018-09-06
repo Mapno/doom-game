@@ -5,7 +5,6 @@ function Bullet(player, game, x, y) {
     this.y = y;
     this.player.direction ? this.vx = 5 : this.vx = -5;
     this.r = 5;
-    this.gravity = 0.25;
     this.w = 5;
     this.h = 1;
 }

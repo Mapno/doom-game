@@ -28,12 +28,23 @@ Background.prototype.getImages = function () {
         img.src = './assets/backgrounds/hell-cave-frames/frame_' + i + '.gif'; //creates img obj with corresponding frame
         this.bgFrames.push(img);
     }
+    this.health = new Image();
+    this.health.src = "./assets/scoreboard/health.png";
+    this.percentage = new Image();
+    this.percentage.src = "./assets/scoreboard/percentage.png";
+    this.numbers = [];
+    for(let i = 0; i <= 9; i++){
+        img = new Image();
+        img.src = './assets/scoreboard/' + i + '.png';
+        this.numbers.push(img);
+    }
 }
 
 //draws the bg twice so it is continued when player moves and white canvas doesn't appear
 Background.prototype.draw = function () {
     this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x, this.y);
     this.game.ctx.drawImage(this.bgFrames[this.frameIndex], this.x + this.game.c.width, this.y);
+    this.drawSb();
 }
 
 
@@ -50,4 +61,19 @@ Background.prototype.imgfps = function () {
     this.game.frames % 8 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 8 ? this.frameIndex = 0 : 0;
 
+}
+
+Background.prototype.drawSb = function() {
+    let healthy = this.game.player.life.toString();
+    if(this.game.player.life < 0){ healthy = '00';}
+    this.game.ctx.drawImage(this.health, 0, 0);
+    if(healthy == '100') {
+        this.game.ctx.drawImage(this.numbers[1], 5, 5);
+        this.game.ctx.drawImage(this.numbers[0], 20, 5);
+        this.game.ctx.drawImage(this.numbers[0], 35, 5);
+
+    } else {
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[0])], 20, 5);
+        this.game.ctx.drawImage(this.numbers[parseInt(healthy[1])], 35, 5);
+    }
 }

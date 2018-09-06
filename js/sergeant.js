@@ -14,6 +14,8 @@ function Sergeant(game, life, x) {
 
     this.bullets = [];
 
+    this.shooting = false;
+
 }
 
 Sergeant.prototype = Object.create(Enemy.prototype);
@@ -63,8 +65,29 @@ Sergeant.prototype.getImages = function () {
     }
 }
 
+Enemy.prototype.draw = function () {
+    // switch (true) {
+    //     case this.dead && this.frameDying <= 7:
+    //         this.game.ctx.drawImage(this.dieArr[this.frameDying], this.x, this.y + this.h - this.dieArr[this.frameDying].height);
+    //         break;
+    //     case this.impact:
+    //         this.direction ? this.game.ctx.drawImage(this.impactRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.impactLeft, this.x, this.y, this.w, this.h);
+    //         setTimeout(function () {
+    //             this.impact = false;
+    //         }.bind(this), 100);
+    //         break;
+    //     case this.attacked:
+    //         this.direction ? this.game.ctx.drawImage(this.attackRight[this.frameIndex % 4], this.x, this.y) : this.game.ctx.drawImage(this.attackLeft[this.frameIndex % 4], this.x, this.y);
+    //         break;
+    //     case this.vx < 0 || this.vx > 0:
+    //         this.direction ? this.game.ctx.drawImage(this.moveRight[Math.floor(this.frameIndex / 2)], this.x, this.y) : this.game.ctx.drawImage(this.moveLeft[Math.floor(this.frameIndex / 2)], this.x, this.y);
+    //         break;
+    // }
 
-Sergeant.prototype.move = function () {
+    // this.drawBullets();
+}
+
+Sergeant.prototype.moveX = function () {
     switch (true) {
         case this.dead:
             this.vx = -this.game.player.vx;
@@ -73,30 +96,25 @@ Sergeant.prototype.move = function () {
             this.vx = 0;
             this.moving();
             break;
-        case this.game.player.x + this.game.player.w + 300 <= this.x:
-            this.vx = -this.game.player.vx;
+        case this.x - this.game.player.x <= 300 && this.game.player.x - this.x <= 300 && this.attacked:
+            this.vx = 0;
             this.attack();
             break;
-        case this.x > this.game.player.x + this.game.player.w:
-            this.game.player.vx ? this.vx = -1 - this.game.player.vx : this.vx = -1;
-            this.moving();
+        case this.x - this.game.player.x <= 300 && this.game.player.x - this.x <= 300:
+            this.vx = 0;
             break;
-        case this.x + this.w < this.game.player.x:
-            this.game.player.vx ? this.vx = 1 - this.game.player.vx : this.vx = 1;
-            this.moving();
-            break;
+        // case this.x - this.:
+            
+
     }
     this.x += this.vx;
-    this.drawBullets();
+
+    // console.log(this.direction);
+    // console.log(this.game.frames)
+    // console.log(this.vx)
 }
 
-Sergeant.prototype.attack = function () {
-    this.attacked = true;
-    var bullet;
-    this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
-    this.shooted = true;
-    this.bullets.push(bullet);
-};
+
 
 //calls bullet draw method
 Sergeant.prototype.drawBullets = function () {
@@ -105,7 +123,21 @@ Sergeant.prototype.drawBullets = function () {
     });
 }
 
-Sergeant.prototype.shoot = function () {
+Sergeant.prototype.shoot = function() {
     this.attacked = true;
-    this.game.frames % 50 === 0 ? this.player.life -= 65 : 0;
+    this.attack();
 }
+
+Sergeant.prototype.attack = function () {
+    var bullet;
+    this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
+    this.bullets.push(bullet);
+};
+
+Sergeant.prototype.move = function() {
+    this.moveX();
+    this.bullets.forEach(e => {
+        e.move();
+    })
+}
+

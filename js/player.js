@@ -22,6 +22,8 @@ function Player(game, life) {
 
     this.shooted = false; //variable that registers if playes has shooted so draw method paints shooting frame
 
+    this.impact = false;
+
     //frameIndex is a frame counter which is slower than the base frame counter for the game
     this.frameIndex = 0;
     this.frameDying = 0;
@@ -52,6 +54,12 @@ Player.prototype.draw = function () {
                 this.shooted = false;
             }.bind(this), 50);
             break;
+        case this.impact:
+            this.direction ? this.game.ctx.drawImage(this.hitRight, this.x, this.y, this.w, this.h) : this.game.ctx.drawImage(this.hitLeft, this.x, this.y, this.w, this.h);
+            setTimeout(function () {
+                this.impact = false;
+            }.bind(this), 100);
+            break;
         case this.vx === 0 && this.life > 0:
             this.direction ? this.game.ctx.drawImage(this.imgStillRight, this.x, this.y) : this.game.ctx.drawImage(this.imgStillLeft, this.x, this.y);
             break;
@@ -60,6 +68,7 @@ Player.prototype.draw = function () {
     }
 
     this.drawBullets();
+    console.log(this.impact)
 }
 
 //calls bullet draw method
@@ -104,6 +113,11 @@ Player.prototype.getImages = function () {
         img.src = './assets/sprites/doom-guy/die' + i + '.png';
         this.dieArr.push(img);
     }
+
+    this.hitRight = new Image();
+    this.hitRight.src = "./assets/sprites/doom-guy/hitRight.png";
+    this.hitLeft = new Image();
+    this.hitLeft.src = "./assets/sprites/doom-guy/hitLeft.png";
 }
 
 //movement in x axis.
@@ -208,4 +222,21 @@ Player.prototype.imgfps = function () {
 Player.prototype.dying = function () {
     this.dead = true;
     this.game.frames % 10 === 0 ? this.frameDying++ : 0;
+}
+
+Player.prototype.getsHit = function () {
+    this.game.enemyArr.forEach(e => {
+        if (e.bullets) {
+            e.bullets.forEach((b, i, arr) => {
+                if (b.x >= this.x && b.x <= (this.x + this.w) && b.y <= this.y + this.h && b.y >= this.y) {
+                    arr.splice(i, 1);
+                    this.impact = true;
+                    this.life -= 50;
+                }
+            })
+        
+        // } else if(e.x <= this.x + this.w - 20 && e.x + e.w >= this.x + 20 && e.y + e.h >= this.y + 50) {
+        //     this.impact = true;
+        }
+    })
 }
