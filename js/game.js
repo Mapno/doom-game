@@ -18,9 +18,9 @@ Game.prototype.start = function () {
     function () {
       this.kill();
       this.checkDead();
-      // if (this.frames % 200 == 0) {
-      //   if(this.enemyCounter < 8){this.enemyGenerator()};
-      // }
+      if (this.frames % 200 == 0) {
+        if(this.enemyCounter < 6){this.enemyGenerator()};
+      }
       this.move();
       this.clear();
       this.draw();
