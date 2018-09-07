@@ -13,13 +13,14 @@ function Game(intro) {
 }
 
 Game.prototype.start = function () {
+  mainTheme.play();
   this.interval = setInterval(
     function () {
       this.kill();
       this.checkDead();
-      if (this.frames % 200 == 0) {
-        if(this.enemyCounter < 8){this.enemyGenerator()};
-      }
+      // if (this.frames % 200 == 0) {
+      //   if(this.enemyCounter < 8){this.enemyGenerator()};
+      // }
       this.move();
       this.clear();
       this.draw();
@@ -136,6 +137,7 @@ Game.prototype.lose = function () {
       setTimeout(
         function() {
           if (confirm("Play Again?")) {
+            mainTheme.pause();
             this.intro.start();
           }
         }.bind(this),

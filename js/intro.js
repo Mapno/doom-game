@@ -29,6 +29,7 @@ Intro.prototype.drawBg = function () {
 }
 
 Intro.prototype.start = function () {
+    introTheme.play()
     this.eventListener();
     this.interval = setInterval(function () {
         this.clear();
@@ -58,9 +59,10 @@ Intro.prototype.eventListener = function () {
 };
 
 Intro.prototype.newGame = function () {
-    this.stop();
+    this.stop()
     var game = new Game(this);
     game.start();
+    introTheme.pause();
 }
 
 Intro.prototype.stop = function () {

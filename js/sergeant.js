@@ -18,6 +18,7 @@ function Sergeant(game, life, platform) {
 
     this.shooting = false;
 
+    this.canShoot = true
     }
 
 Sergeant.prototype = Object.create(Enemy.prototype);
@@ -91,8 +92,6 @@ Enemy.prototype.draw = function () {
     }
 
     this.drawBullets();
-    console.log(this.vx)
-    
 }
 
 Sergeant.prototype.moveX = function () {
@@ -139,10 +138,14 @@ Sergeant.prototype.drawBullets = function () {
 
 Sergeant.prototype.attack = function () {
     var bullet;
-    if(this.game.frames % 50 === 0){
+    if(this.canShoot){
         this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
         this.bullets.push(bullet);
         this.attacked = true;
+        this.canShoot = false
+        setTimeout(function(){
+            this.canShoot = true
+        }.bind(this), 1000)
     }
  
 };
