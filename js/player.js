@@ -248,9 +248,6 @@ Player.prototype.getsHit = function () {
                     this.life -= 10;
                 }
             })
-        
-        // } else if(e.x <= this.x + this.w - 20 && e.x + e.w >= this.x + 20 && e.y + e.h >= this.y + 50) {
-        //     this.impact = true;
         }
     })
 }
