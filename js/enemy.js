@@ -25,6 +25,8 @@ Enemy.prototype.getsHit = function () {
 Enemy.prototype.imgfps = function () {
     this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 8 ? this.frameIndex = 0 : 0;
+    this.frameDying === 1 ? enemyDeath.play() : 0;
+
 }
 
 Enemy.prototype.moving = function () {

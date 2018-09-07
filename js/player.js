@@ -223,18 +223,19 @@ Player.prototype.shoot = function () {
     this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
     this.shooted = true;
     this.bullets.push(bullet);
+    pistol.play();
 };
 
 //counter from 0 to 3, relying on game fps
 Player.prototype.imgfps = function () {
     this.game.frames % 9 === 0 ? this.frameIndex++ : 0;
     this.frameIndex === 6 ? this.frameIndex = 0 : 0;
-
 }
 
 Player.prototype.dying = function () {
     this.dead = true;
     this.game.frames % 10 === 0 ? this.frameDying++ : 0;
+    this.frameDying === 1 ? deathDoomGuy.play() : 0;
 }
 
 Player.prototype.getsHit = function () {

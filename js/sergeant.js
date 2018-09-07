@@ -139,10 +139,11 @@ Sergeant.prototype.drawBullets = function () {
 Sergeant.prototype.attack = function () {
     var bullet;
     if(this.canShoot){
+        gun.play();
         this.direction ? bullet = new Bullet(this, this.game, this.x + this.w, this.y + this.h / 2.6) : bullet = new Bullet(this, this.game, this.x, this.y + this.h / 2.6);
         this.bullets.push(bullet);
         this.attacked = true;
-        this.canShoot = false
+        this.canShoot = false;
         setTimeout(function(){
             this.canShoot = true
         }.bind(this), 1000)
