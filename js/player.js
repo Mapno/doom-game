@@ -245,7 +245,7 @@ Player.prototype.getsHit = function () {
                 if (b.x >= this.x && b.x <= (this.x + this.w) && b.y <= this.y + this.h && b.y >= this.y) {
                     arr.splice(i, 1);
                     this.impact = true;
-                    this.life -= 40;
+                    this.life -= 10;
                 }
             })
         
